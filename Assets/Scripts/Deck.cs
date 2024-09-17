@@ -15,7 +15,7 @@ public class Deck : MonoBehaviour
 
     public void Initialize()
     {
-        SortDeck();
+        Sort();
 
         Debug.Log("Deck initialized");
     }
@@ -54,7 +54,7 @@ public class Deck : MonoBehaviour
         return cards.Count == 0;
     }
 
-    private void SortDeck()
+    private void Sort()
     {
         cards = cards.OrderBy(card => card.suit)  // Sort by suit order
                         .ThenBy(card => card.value)  // Sort by value within each suit
@@ -67,7 +67,7 @@ public class Deck : MonoBehaviour
         {
             GameObject child = new();
             child.transform.SetParent(this.transform, false);
-            child.AddComponent<CardDisplay>().cardObject = card;
+            child.AddComponent<PhysicalCard>().cardObject = card;
 
             Debug.Log(card);
         }

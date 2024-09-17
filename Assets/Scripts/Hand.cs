@@ -2,24 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hand : MonoBehaviour
+public class Hand
 {
-    public List<Card> cards;
+    public List<Card> cards = new();
     public bool isBusted = false;
     public bool isBlackjack = false;
     public int score = 0;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     public void AddCard(Card card)
     {
         if (isBusted || isBlackjack) // the Card can only be picked if the hand is not busted or is not a blackjack
         {
-            Debug.LogWarning("Can't drow a card! Hand busted or blackjack");
+            Debug.LogWarning("Can't draw a card! Hand busted or blackjack");
             return;
         }
 
