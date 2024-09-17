@@ -12,7 +12,7 @@ using UnityEngine;
 
     public enum Value 
     { 
-        Ace,
+        Ace = 1,
         Two,
         Three,
         Four,
@@ -27,10 +27,15 @@ using UnityEngine;
         King
     }
 
-[CreateAssetMenu(fileName = "Card", menuName = "21-dealer/Card", order = 0)]
+[CreateAssetMenu(fileName = "New Card", menuName = "Card", order = 0)]
 public class Card : ScriptableObject {
     public Suit suit;
     public Value value;
-    public GameObject cardModel;
+    public GameObject model;
+
+    public override string ToString()
+    {
+        return suit + ":" + value;
+    }
 }
 
