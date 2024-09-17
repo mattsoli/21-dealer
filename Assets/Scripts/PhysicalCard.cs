@@ -8,10 +8,17 @@ public class PhysicalCard : MonoBehaviour
 
     void Awake()
     {
-        // instatiate the 3D model prefab of the card, assigned in the Card object
-        GameObject cardModel = Instantiate(cardObject.model, this.transform) as GameObject;
-        
-        Debug.Log(cardObject.ToString());
+        // Get the Renderer component from the prefab object and this one
+        Renderer sourceRenderer = cardObject.model.GetComponent<Renderer>();
+        Renderer thisRenderer = this.GetComponent<Renderer>();
+
+        if (sourceRenderer != null && thisRenderer != null)
+        {
+            // Copy the material from the source object to this object
+           thisRenderer.material = sourceRenderer.sharedMaterial;
+        }
+
+            Debug.Log(cardObject.ToString());
     }
 
 }
