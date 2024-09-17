@@ -19,6 +19,7 @@ public class Hand : MonoBehaviour
     {
         if (isBusted || isBlackjack) // the Card can only be picked if the hand is not busted or is not a blackjack
         {
+            Debug.LogWarning("Can't drow a card! Hand busted or blackjack");
             return;
         }
 
