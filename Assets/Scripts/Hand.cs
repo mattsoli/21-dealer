@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Hand
 {
-    public List<Card> cards = new();
+    public List<PhysicalCard> cards = new();
     public bool isBusted = false;
     public bool isBlackjack = false;
     public int score = 0;
 
-    public void AddCard(Card card)
+    public void AddCard(PhysicalCard card)
     {
         if (isBusted || isBlackjack) // the Card can only be picked if the hand is not busted or is not a blackjack
         {
@@ -17,6 +17,7 @@ public class Hand
             return;
         }
 
+        card.isInHand = true; // The PhysicalCard is now in an Hand
         cards.Add(card);
         score = GetScore();
 
@@ -38,8 +39,10 @@ public class Hand
         int aceCount = 0;
 
         // First pass: calculate total score and count the Aces
-        foreach (Card card in cards)
+        foreach (PhysicalCard phCard in cards)
         {
+            Card card = phCard.cardObject;
+
             if (card.value == Value.Ace) // Aces in the hand
             {
                 tempScore += 11;

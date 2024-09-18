@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
         // when a card is throwed to the player and is waiting for it, add the card to player's hand
         if (coll.gameObject.CompareTag("Card") && isWaiting)
         { 
-            Card lastCard = coll.gameObject.GetComponent<PhysicalCard>().cardObject;
+            PhysicalCard lastCard = coll.gameObject.GetComponent<PhysicalCard>();
             Debug.Log(lastCard);
             hand.AddCard(lastCard);
             Decide();

@@ -7,10 +7,19 @@ public class Deck : MonoBehaviour
 {
     public List<Card> cards = new();
 
+    public GameObject physicalCardPrefab; // Reference of the PhysicalCard prefab (Assets/Prefabs)
+
+    private bool isDraggingCard = false; // Check if there's a card currently being dragged
+
     // Start is called before the first frame update
     void Start()
     {
         Initialize();
+    }
+
+    void Update()
+    {
+
     }
 
     public void Initialize()
@@ -37,21 +46,16 @@ public class Deck : MonoBehaviour
     {
         List<Card> temp1 = new();
         List<Card> temp2 = new();
-        
+
         int rand = Random.Range(1, cards.Count);
 
         temp1 = cards.Skip(rand).Take(cards.Count).ToList(); // Half deck to put above
         temp2 = cards.Take(rand).ToList(); // Other half to put below
-        
+
         cards.Clear();
         cards = temp1.Concat(temp2).ToList();
-        
-        Debug.Log("Deck cutted from position #" + rand);
-    }
 
-    public bool IsEmpty()
-    {
-        return cards.Count == 0;
+        Debug.Log("Deck cutted from position #" + rand);
     }
 
     private void Sort()
@@ -71,6 +75,55 @@ public class Deck : MonoBehaviour
 
             Debug.Log(card);
         }
+    }
+
+
+    public void StopDraggingCard()
+    {
+        isDraggingCard = false;
+    }
+
+    private void OnMouseDown()
+    {
+        if (isDraggingCard)
+            return;
+
+        // Check if the deck has cards left and no card is currently being dragged
+        if (cards != null && cards.Count > 0)
+        {
+            // Instantiate the first card from the deck when clicking on the deck
+            InstantiateFirstCard();
+        }
+        else if (cards == null || cards.Count == 0)
+        {
+            Debug.LogError("No Card available in the deck!");
+        }
+    }
+
+    // Instantiate the first card in the deck and allow it to be dragged
+    private void InstantiateFirstCard()
+    {
+        Card firstCard = cards[0]; // Get the first card from the list
+
+        if (physicalCardPrefab == null) // Check if the PhysicalCard prefab is assigned
+        {
+            Debug.LogError("No PhysicalCard prefab!");
+            return;
+        }
+
+        Vector3 spawnPoint = this.transform.position;
+        spawnPoint.y = 1f;
+
+        // Instantiate the card at the deck's position
+        GameObject instantiatedPhysicalCard = Instantiate(physicalCardPrefab, spawnPoint, Quaternion.identity);
+
+        instantiatedPhysicalCard.GetComponent<PhysicalCard>().cardObject = firstCard; // Add the Card to the instantiated PhysicalCard
+        instantiatedPhysicalCard.GetComponent<PhysicalCard>().CardRenderer(); // Renderize the card
+
+        cards.RemoveAt(0); // Remove the card from the deck list
+
+        isDraggingCard = true; // The player is dragging a card
+
     }
 
 
