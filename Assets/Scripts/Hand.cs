@@ -4,32 +4,47 @@ using UnityEngine;
 
 public class Hand
 {
-    public List<PhysicalCard> cards = new();
+    public HashSet<PhysicalCard> cards = new();
     public bool isBusted = false;
     public bool isBlackjack = false;
+    public bool is21 = false;
     public int score = 0;
 
     public void AddCard(PhysicalCard card)
     {
-        if (isBusted || isBlackjack) // the Card can only be picked if the hand is not busted or is not a blackjack
+        if (isBusted || isBlackjack || is21) // the Card can only be picked if the hand is not busted or is not a blackjack
         {
             Debug.LogWarning("Can't draw a card! Hand busted or blackjack");
             return;
         }
-
-        card.isInHand = true; // The PhysicalCard is now in an Hand
+                
         cards.Add(card);
-        score = GetScore();
+        card.isInHand = true; // The PhysicalCard is now in an Hand
 
-        if (score > 21)
+        HandInfoUpdate();
+    }
+
+    private void HandInfoUpdate()
+    {
+        score = GetScore(); // Calculate the score of this hand
+
+        if (score > 21) // If score > 21 is busted
         {
             isBusted = true;
             Debug.Log("Hand busted!");
         }
         else if (score == 21)
         {
-            isBlackjack = true;
-            Debug.Log("Blackjack!");
+            if (cards.Count < 3) // If score = 21 with 2 cards is Blackjack
+            {
+                isBlackjack = true;
+                Debug.Log("Blackjack!");
+            }
+            else // If score = 21 with more card is 21
+            {
+                is21 = true;
+                Debug.Log("21!");
+            }
         }
     }
 

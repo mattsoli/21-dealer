@@ -14,7 +14,7 @@ public class Deck : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Initialize();
+        TurnManager.OnInitialDeal += Initialize;
     }
 
     void Update()
@@ -124,6 +124,12 @@ public class Deck : MonoBehaviour
 
         isDraggingCard = true; // The player is dragging a card
 
+    }
+
+
+    private void OnDisable()
+    {
+        TurnManager.OnInitialDeal -= Initialize;
     }
 
 

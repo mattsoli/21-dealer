@@ -6,58 +6,112 @@ public class Player : MonoBehaviour
 {
     public int playerId;
     public float decisionThreshold = 16;
-    [SerializeReference] public Hand hand = new();
+    public Hand hand = new();
+
+    private bool isInitialSetup = false; // Control for the first 2 cards of the game
+    public bool IsInitialSetup { get; private set; }
 
     private bool isWaiting = false; // for a card
+    public bool IsWaiting { get; private set; }
+
     private bool isStanding = false;
+    public bool IsStanding { get; private set; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Decide();
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         
     }
 
-    private void OnTriggerEnter(Collider coll)
+    private void OnEnable()
     {
-        // when a card is throwed to the player and is waiting for it, add the card to player's hand
-        if (coll.gameObject.CompareTag("Card") && isWaiting)
-        { 
-            PhysicalCard lastCard = coll.gameObject.GetComponent<PhysicalCard>();
-            Debug.Log(lastCard);
+        TurnManager.OnInitialDeal += InitialSetup;
+        TurnManager.OnMiddleDeal += Decide;
+    }
+
+    private void OnDisable()
+    {
+        TurnManager.OnInitialDeal -= InitialSetup;
+        TurnManager.OnMiddleDeal -= Decide;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // When a card is throwed to the player and is waiting for it, add the card to player's hand
+        if (other.gameObject.CompareTag("Card") && IsWaiting)
+        {
+            PhysicalCard lastCard = other.gameObject.GetComponent<PhysicalCard>();
             hand.AddCard(lastCard);
-            Decide();
+
+            Debug.Log("Player_" + playerId + " gets => " + lastCard.cardObject.ToString());
+
+            if (hand.cards.Count < 3 && IsInitialSetup)
+            {
+                InitialSetup();
+            }
+            else
+            {
+                Decide();
+            }
         }
     }
 
-    public void Decide()
+    private void Decide()
     {
+        TurnManager tm = FindAnyObjectByType<TurnManager>();
+
+        if (hand.isBusted) // Player Busted
+        {
+            Debug.Log("Player_" + playerId + "BUSTED!");
+            IsWaiting = false;
+            tm.PlayerEndTurn(this);
+            return;
+        }
+
         if (hand.score > decisionThreshold) // player decides to ask another card is the score is less than the decision threshold
         {
             Stand();
-        } else
+            tm.PlayerEndTurn(this);
+        }
+        else
         {
             Hit();
+            tm.PlayerWaiting(this);
         }
 
     }
 
-    public void Hit()
+    private void InitialSetup()
     {
-        isWaiting = true;
-        isStanding = false;
+        Debug.Log("Player_" + playerId + " is waiting the initial setup...");
+
+        TurnManager tm = FindObjectOfType<TurnManager>();
+
+        IsWaiting = true;
+        IsInitialSetup = true;
+
+        tm.PlayerWaiting(this);
+
+        if (hand.cards.Count == 2)
+        {
+            IsWaiting = false;
+            IsInitialSetup = false;
+
+            tm.PlayerEndTurn(this);
+        }
+
+    }
+
+    private void Hit()
+    {
+        IsWaiting = true;
+        IsStanding = false;
         Debug.Log("Player_" + playerId + " asks new card...");
     }
 
-    public void Stand()
+    private void Stand()
     {
-        isStanding = true;
-        isWaiting = false;
+        IsStanding = true;
+        IsWaiting = false;
         Debug.Log("Player_" + playerId + " stands...");
     }
 
