@@ -5,7 +5,8 @@ using UnityEngine;
 public class PhysicalCard : MonoBehaviour
 {
     public Card cardObject;
-    public bool isInHand = false;
+    private bool isInHand = false;
+    public bool IsInHand { get; set; }
 
     private bool isDragging = false;
 
@@ -14,10 +15,17 @@ public class PhysicalCard : MonoBehaviour
     private Vector3 lastMousePosition; // To track the last mouse position for velocity calculation
     private Vector3 currentVelocity;   // Velocity of the card for the throwing effect
 
+    private float minVelocityMagnitude = 0.1f;
+    public float maxVelocityMagnitude = 10f;
+    public float smoothingFactor = 0.1f;
+
     private void Start()
     {
         mOffset = this.transform.position - GetMouseWorldPosition(); // Calculate the offset between the card's position and the mouse position
         rb = GetComponent<Rigidbody>();
+
+        mOffset = transform.position - GetMouseWorldPosition();
+        lastMousePosition = GetMouseWorldPosition();
     }
 
     void Update()
@@ -40,66 +48,71 @@ public class PhysicalCard : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition()  // Return the mouse position in world coordinates
     {
-        // Create a ray from the camera to the mouse position
+        // Using a raycast on a virtual plane where the card can be dragged
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        // Plane is set to XZ (Y = fixedY), which matches the table height
-        Plane plane = new(Vector3.up, new Vector3(0, 1f, 0));
+        Plane plane = new Plane(Vector3.up, new Vector3(0, 1f, 0));
 
         if (plane.Raycast(ray, out float distanceToPlane))
         {
-            // Return the point where the ray intersects the XZ plane
             return ray.GetPoint(distanceToPlane);
         }
 
-        return Vector3.zero;  // Default return value (shouldn't happen if the plane is properly set up)
+        Debug.LogWarning("Failed to get mouse world position");
+        return Vector3.zero;
     }
 
     private void OnMouseDown()
     {
-        if (isInHand)
-            return; // If the PhysicalCard is in an Hand, can't be moved again
+        if (isInHand) return; // If the card in in hand it can't be dragged anymore
 
         isDragging = true;
-
-        if (rb != null)
-            rb.isKinematic = true; // Make the card kinematic while dragging
-
-        // Calculate the offset between the mouse click position and the card's position on the XZ plane
+        rb.isKinematic = true;
         mOffset = transform.position - GetMouseWorldPosition();
-
-        // Store the last mouse position to calculate velocity later
         lastMousePosition = GetMouseWorldPosition();
+
+        currentVelocity = Vector3.zero;
     }
 
     private void OnMouseDrag()
     {
-        if (!isDragging)
-            return;
+        if (!isDragging) return;
 
-        // Update the card's position based on the mouse movement, using the offset
         Vector3 newPosition = GetMouseWorldPosition() + mOffset;
-        // Keep the Y position fixed to the height of the table
-        newPosition.y = 1f;
+        newPosition.y = 1f; // The height is fixed in the scene
         transform.position = newPosition;
 
-        // Calculate the current velocity based on the difference between the last and current mouse positions
-        currentVelocity = (GetMouseWorldPosition() - lastMousePosition) / Time.deltaTime;
+        Vector3 currentMousePosition = GetMouseWorldPosition();
+        Vector3 frameVelocity = (currentMousePosition - lastMousePosition) / Time.deltaTime;
 
-        lastMousePosition = GetMouseWorldPosition();
+        // Smooth the velocity
+        currentVelocity = Vector3.Lerp(currentVelocity, frameVelocity, smoothingFactor);
+
+        // Clamp the velocity magnitude
+        currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxVelocityMagnitude);
+
+        lastMousePosition = currentMousePosition;
     }
 
     private void OnMouseUp()
     {
+        if (!isDragging) return;
+
         isDragging = false;
         FindObjectOfType<Deck>().StopDraggingCard();
 
-        // Apply the throwing effect (velocity) when the mouse button is released
         if (rb != null)
         {
-            rb.isKinematic = false; // Enable physics after releasing
-            rb.velocity = currentVelocity; // Apply the velocity calculated during dragging
+            rb.isKinematic = false;
+
+            if (currentVelocity.magnitude > minVelocityMagnitude) rb.velocity = currentVelocity;
+            else rb.velocity = Vector3.zero;
         }
+        else
+        {
+            Debug.LogError("Rigidbody is null on mouse up!");
+        }
+
+        currentVelocity = Vector3.zero;
     }
 
 
