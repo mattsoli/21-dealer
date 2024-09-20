@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int playerId;
+    public string playerName;
     public float decisionThreshold = 16;
     public float standProbability = 0.5f; // Chance to stand if over threshold
     public Hand hand = new();
@@ -19,7 +20,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S)) // ---------------> DEBUG DA TOGLIERE
         {
             Debug.Log("> Player_" + playerId + " status -> " + status);
         }
