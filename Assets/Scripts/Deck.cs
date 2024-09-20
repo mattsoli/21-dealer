@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Deck : MonoBehaviour
@@ -9,22 +10,50 @@ public class Deck : MonoBehaviour
 
     public GameObject physicalCardPrefab; // Reference of the PhysicalCard prefab (Assets/Prefabs)
 
+    private List<Card> discards = new();
+
     private bool isDraggingCard = false; // Check if there's a card currently being dragged
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
         TurnManager.OnInitialDeal += Initialize;
     }
 
+    private void OnDisable()
+    {
+        TurnManager.OnInitialDeal -= Initialize;
+    }
+
+    void Start()
+    {
+        Sort();
+    }
+
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.I)) // ---------------> DEBUG DA TOGLIERE
+        {
+            Initialize();
+        }
 
     }
 
     public void Initialize()
     {
-        Sort();
+        if (discards.Count > 0)
+        {
+            // Put the discarded cards on the deck's bottom
+            cards.AddRange(discards);
+            discards.Clear();
+
+            List<PhysicalCard> physicalDiscards = new List<PhysicalCard>(FindObjectsOfType<PhysicalCard>());
+
+            foreach (PhysicalCard pc in physicalDiscards)
+            {
+                Destroy(pc.gameObject);
+            }
+        }
 
         Debug.Log("Deck initialized");
     }
@@ -121,16 +150,10 @@ public class Deck : MonoBehaviour
         instantiatedPhysicalCard.GetComponent<PhysicalCard>().CardRenderer(); // Renderize the card
 
         cards.RemoveAt(0); // Remove the card from the deck list
+        discards.Add(firstCard); // Add the removed card inside the discards
 
         isDraggingCard = true; // The player is dragging a card
 
     }
-
-
-    private void OnDisable()
-    {
-        TurnManager.OnInitialDeal -= Initialize;
-    }
-
 
 }
