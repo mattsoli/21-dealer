@@ -6,11 +6,10 @@ public class Dealer : MonoBehaviour
 {
     public Hand hand = new();
 
-    private bool isInitialSetup = false; // Control for the first 2 cards of the game
-    public bool IsInitialSetup { get; private set; }
-
     private bool isDealerTurn = false; // for a card
     public bool IsDealerTurn { get; set; }
+
+    public WinManager.PlayerStatus status;
 
     private TurnManager tm;
 
@@ -18,6 +17,8 @@ public class Dealer : MonoBehaviour
     void Start()
     {
         tm = FindObjectOfType<TurnManager>();
+
+        status = WinManager.PlayerStatus.Active;
     }
 
     // Update is called once per frame
@@ -27,6 +28,11 @@ public class Dealer : MonoBehaviour
         {
             IsDealerTurn = false;
             tm.NextPhase();
+        }
+
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("> Dealer status -> " + status);
         }
 
 
@@ -45,7 +51,7 @@ public class Dealer : MonoBehaviour
             if (hand.cards.Count == 1)
                 InitialSetup();
 
-            ScoreCheck();
+            HandStateCheck();
         }
     }
 
@@ -64,24 +70,34 @@ public class Dealer : MonoBehaviour
 
     }
 
-    private void ScoreCheck()
+    private void HandStateCheck()
     {
-        if (hand.isBusted)
+        if (hand.IsBusted)
         {
             Debug.Log("Dealer BUSTED!");
+            status = WinManager.PlayerStatus.Bust;
             IsDealerTurn = false;
             tm.NextPhase();
             return;
         }
-        else if (hand.isBlackjack)
+        else if (hand.IsBlackjack)
         {
             Debug.Log("Dealer BLACKJACK!");
+            status = WinManager.PlayerStatus.Blackjack;
             IsDealerTurn = false;
             tm.NextPhase();
             return;
         }
         else
-        { }
+        {
+            status = WinManager.PlayerStatus.Stand;
+
+            if (hand.Is21) // If Hand is a 21 (not blackjack) the Dealer's turn ends
+            {
+                IsDealerTurn = false;
+                tm.NextPhase();
+            }
+        }
     }
 
 

@@ -5,21 +5,27 @@ using UnityEngine;
 public class Hand
 {
     public HashSet<PhysicalCard> cards = new();
-    public bool isBusted = false;
-    public bool isBlackjack = false;
-    public bool is21 = false;
     public int score = 0;
+
+    private bool isBusted = false;
+    public bool IsBusted { get; set; }
+
+    private bool isBlackjack = false;
+    public bool IsBlackjack { get; set; }
+
+    private bool is21 = false;
+    public bool Is21 { get; set; }
 
     public void AddCard(PhysicalCard card)
     {
-        if (isBusted || isBlackjack || is21) // the Card can only be picked if the hand is not busted or is not a blackjack
+        if (IsBusted || IsBlackjack || Is21) // the Card can only be picked if the hand is not busted or is not a blackjack
         {
             Debug.LogWarning("Can't draw a card! Hand busted or blackjack");
             return;
         }
                 
         cards.Add(card);
-        card.isInHand = true; // The PhysicalCard is now in an Hand
+        card.IsInHand = true; // The PhysicalCard is now in an Hand
 
         HandInfoUpdate();
     }
@@ -30,20 +36,20 @@ public class Hand
 
         if (score > 21) // If score > 21 is busted
         {
-            isBusted = true;
+            IsBusted = true;
             Debug.Log("Hand busted!");
         }
         else if (score == 21)
         {
-            if (cards.Count < 3) // If score = 21 with 2 cards is Blackjack
+            if (cards.Count == 2) // If score = 21 with 2 cards is Blackjack
             {
-                isBlackjack = true;
-                Debug.Log("Blackjack!");
+                IsBlackjack = true;
+                Debug.Log("Hand Blackjack!");
             }
             else // If score = 21 with more card is 21
             {
-                is21 = true;
-                Debug.Log("21!");
+                Is21 = true;
+                Debug.Log("Hand 21!");
             }
         }
     }
@@ -80,7 +86,7 @@ public class Hand
             aceCount--;
         }
 
-        Debug.Log($"Get Score: {tempScore}");
+        Debug.Log($"Hand Score: {tempScore}");
 
         return tempScore;
     }

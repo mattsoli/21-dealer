@@ -14,18 +14,22 @@ public class Player : MonoBehaviour
     private bool isWaiting = false; // for a card
     public bool IsWaiting { get; private set; }
 
-    private bool isStanding = false;
-    public bool IsStanding { get; private set; }
+    public WinManager.PlayerStatus status;
 
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("> Player_" + playerId + " status -> " + status);
+        }
     }
 
     private void OnEnable()
     {
         TurnManager.OnInitialDeal += InitialSetup;
         TurnManager.OnMiddleDeal += Decide;
+
+        status = WinManager.PlayerStatus.Active;
     }
 
     private void OnDisable()
@@ -59,9 +63,10 @@ public class Player : MonoBehaviour
     {
         TurnManager tm = FindAnyObjectByType<TurnManager>();
 
-        if (hand.isBusted) // Player Busted
+        if (hand.IsBusted) // Player Busted
         {
             Debug.Log("Player_" + playerId + "BUSTED!");
+            status = WinManager.PlayerStatus.Bust;
             IsWaiting = false;
             tm.PlayerEndTurn(this);
             return;
@@ -104,14 +109,18 @@ public class Player : MonoBehaviour
     private void Hit()
     {
         IsWaiting = true;
-        IsStanding = false;
         Debug.Log("Player_" + playerId + " asks new card...");
     }
 
     private void Stand()
     {
-        IsStanding = true;
         IsWaiting = false;
+
+        if (hand.IsBlackjack)
+            status = WinManager.PlayerStatus.Blackjack;
+        else
+            status = WinManager.PlayerStatus.Stand;
+
         Debug.Log("Player_" + playerId + " stands...");
     }
 
