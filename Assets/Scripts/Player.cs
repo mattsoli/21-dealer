@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public int playerId;
     public float decisionThreshold = 16;
+    public float standProbability = 0.5f; // Chance to stand if over threshold
     public Hand hand = new();
 
     private bool isInitialSetup = false; // Control for the first 2 cards of the game
@@ -72,7 +73,11 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (hand.score > decisionThreshold) // player decides to ask another card is the score is less than the decision threshold
+        float dynamicProbability = CalculateStandProbability(hand.score); // Dynamic probability based on how 21 is near
+        float randomValue = Random.Range(0f, 1f);
+
+        // Player decides to ask another card is the score is less than the decision threshold
+        if (hand.score > decisionThreshold && randomValue < dynamicProbability) // If true, Player stands
         {
             Stand();
             tm.PlayerEndTurn(this);
@@ -130,5 +135,19 @@ public class Player : MonoBehaviour
         Debug.Log("Player_" + playerId + " hand is reset");
     }
 
+    // Return a chance to Stand if score is near to 21
+    private float CalculateStandProbability(int score)
+    {
+        if (score >= 21) return 1f; // Always stop if the score is 21
+
+        int difference = 21 - score;
+        float probability = 1f - (difference / 10f); // More score is near to 21, higher is the chance to Stand
+
+        probability = Mathf.Pow(probability, 2); // Chance grows squared
+        probability = Mathf.Clamp(probability, 0f, 1f);
+
+        Debug.Log($"Player_{playerId} has a {probability}% to Stand");
+        return probability;
+    }
 
 }
