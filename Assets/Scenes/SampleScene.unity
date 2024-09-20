@@ -302,12 +302,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bddc718d13083048acd00f999edafce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnManager: {fileID: 1609879868}
-  dealer: {fileID: 1863529725}
-  deck: {fileID: 2059293115}
+  numberOfPlayers: 0
   players: []
+  playerPrefab: {fileID: 6536411470926354099, guid: 059251c78e7da74499ed9b1103b35ad9, type: 3}
   playerStations: []
-  playerPrefab: {fileID: 0}
   currentGameState: 0
   mainMenuUI: {fileID: 1230896985}
   pauseMenuUI: {fileID: 1909132359}

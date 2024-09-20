@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static WinManager;
 
 public class TurnManager : MonoBehaviour
 {
@@ -27,10 +28,18 @@ public class TurnManager : MonoBehaviour
     public static event Action OnMiddleDeal;
     public static event Action OnEndGame;
 
+    private void OnEnable() 
+    {
+        WinManager.OnWinConditionEvaluated += TestWinResults; // ---------------> DA TOGLIERE
+    }
+
+    private void OnDisable()
+    {
+        WinManager.OnWinConditionEvaluated -= TestWinResults; // ---------------> DA TOGLIERE
+    }
+
     private void Awake()
     {
-        currentPhase = GamePhase.None;
-
         phasesDictionary = new Dictionary<GamePhase, Action>
         {
             { GamePhase.InitialDeal, OnInitialDeal },
@@ -41,19 +50,15 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(KeyCode.Keypad1)) // ------> DEBUG DA TOGLIERE
         {
             NextPhase();
         }
     }
 
-
-
-
-
     public void PlayerWaiting(Player player)
     {
-        Debug.Log("> PLAYER_" + player.playerId);
+        Debug.Log($"> PLAYER_{player.playerId}'s turn");
 
         if (player.IsWaiting && !players.Contains(player))
         {
@@ -69,6 +74,9 @@ public class TurnManager : MonoBehaviour
             players.Remove(player);
         }
 
+        Debug.Log("PORCO DIO -> " + dealer);
+        Debug.Log("DIO CANE -> " + deck);
+
         if (players.Count == 0)
         {
             if (currentPhase == GamePhase.InitialDeal)
@@ -78,9 +86,17 @@ public class TurnManager : MonoBehaviour
             else
             {
                 dealer.IsDealerTurn = true;
+                Debug.Log("> Dealer's turn");
             }
 
         }
+    }
+
+    public void StartNewRound()
+    {
+        currentPhase = GamePhase.None;
+
+        Debug.Log("=== New Round ===");
     }
 
     public void NextPhase()
@@ -92,5 +108,12 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Phase " + currentPhase + " started");
     }
 
+    private void TestWinResults(Dictionary<Player, Outcome> results) // ---------------> DA TOGLIERE
+    {
+        foreach (var result in results)
+        {
+            Debug.Log($"{result}");
+        }
+    }
 
 }

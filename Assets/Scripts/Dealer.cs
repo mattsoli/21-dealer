@@ -11,19 +11,17 @@ public class Dealer : MonoBehaviour
 
     public WinManager.PlayerStatus status;
 
-    private TurnManager tm;
-
     // Start is called before the first frame update
     void Start()
     {
-        tm = FindObjectOfType<TurnManager>();
-
         status = WinManager.PlayerStatus.Active;
     }
 
     // Update is called once per frame
     void Update()
     {
+        TurnManager tm = FindObjectOfType<TurnManager>();
+
         if (Input.GetKeyDown(KeyCode.Space) && IsDealerTurn)
         {
             IsDealerTurn = false;
@@ -57,6 +55,8 @@ public class Dealer : MonoBehaviour
 
     public void InitialSetup()
     {
+        TurnManager tm = FindObjectOfType<TurnManager>();
+
         if (hand.cards.Count < 1)
         {
             Debug.Log("Dealer is waiting the initial setup...");
@@ -67,11 +67,12 @@ public class Dealer : MonoBehaviour
             IsDealerTurn = false;
             tm.NextPhase();
         }
-
     }
 
     private void HandStateCheck()
     {
+        TurnManager tm = FindObjectOfType<TurnManager>();
+
         if (hand.IsBusted)
         {
             Debug.Log("Dealer BUSTED!");

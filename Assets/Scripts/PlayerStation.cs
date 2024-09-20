@@ -11,7 +11,7 @@ public class PlayerStation : MonoBehaviour
 
     private Player associatedPlayer;
 
-    public Player playerPrefab; // ----------> DEBUG DA TOGLIERE
+    //public Player playerPrefab; // ----------> DEBUG DA TOGLIERE
 
     private void Awake()
     {
@@ -31,15 +31,15 @@ public class PlayerStation : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) // ----------> DEBUG DA TOGLIERE
-        {
-            AssignPlayer(playerPrefab);
-        }
+        //if (Input.GetKeyDown(KeyCode.P)) // ----------> DEBUG DA TOGLIERE
+        //{
+        //    AssignPlayer(playerPrefab);
+        //}
     }
 
-    public void AssignPlayer(Player player)
+    public Player AssignPlayer(Player player)
     {
-        // Spawn the player to the relative position of the PlayerStation object
+        // Spawns the player to the relative position of the PlayerStation object
         associatedPlayer = Instantiate(player);
         associatedPlayer.playerId = stationId;
         associatedPlayer.transform.position = playerSpawnPoint.position;
@@ -47,7 +47,9 @@ public class PlayerStation : MonoBehaviour
 
         AlignPlayerHandCollider();
 
-        associatedPlayer.gameObject.SetActive(true);
+        //associatedPlayer.gameObject.SetActive(true);
+
+        return associatedPlayer;
     }
 
     private void AlignPlayerHandCollider()
