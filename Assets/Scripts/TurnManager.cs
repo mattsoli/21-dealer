@@ -74,6 +74,8 @@ public class TurnManager : MonoBehaviour
             players.Add(player);
             Debug.Log("Player_" + player.playerId + " in waiting list");
         }
+
+        GameManager.Instance.GetCurrentTurn(GameManager.RoundTurn.Players);
     }
 
     public void PlayerEndTurn(Player player)
@@ -95,6 +97,7 @@ public class TurnManager : MonoBehaviour
                 Debug.Log("> Dealer's turn");
             }
 
+            GameManager.Instance.GetCurrentTurn(GameManager.RoundTurn.Dealer);
         }
     }
 
@@ -115,6 +118,8 @@ public class TurnManager : MonoBehaviour
 
     private void TestWinResults(Dictionary<Player, Outcome> results) // ---------------> DA TOGLIERE
     {
+        GameManager.Instance.GetCurrentTurn(GameManager.RoundTurn.None);
+
         foreach (var result in results)
         {
             Debug.Log($"{result}");

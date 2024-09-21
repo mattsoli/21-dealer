@@ -719,7 +719,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 328105280}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 879335677}
+        m_TargetAssemblyTypeName: UIMainMenuController, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &328105280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1282,8 +1294,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCountSlider: {fileID: 237557400}
-  startGameButton: {fileID: 1576354413}
-  quitButton: {fileID: 328105279}
 --- !u!4 &879335678
 Transform:
   m_ObjectHideFlags: 0
@@ -1871,7 +1881,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1576354414}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 879335677}
+        m_TargetAssemblyTypeName: UIMainMenuController, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1576354414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2115,7 +2137,9 @@ MonoBehaviour:
   turnManager: {fileID: 5635399669036123665, guid: 3de2c17f1035e3a448d7e7386d7cdb69, type: 3}
   winManager: {fileID: 3454282882570250618, guid: 843948a28993dbe4a848e3a39cccd67c, type: 3}
   playerPrefab: {fileID: 1097976102657787921, guid: 059251c78e7da74499ed9b1103b35ad9, type: 3}
+  roundQuantity: 2
   currentGameState: 0
+  roundTurn: 0
 --- !u!4 &2017744509
 Transform:
   m_ObjectHideFlags: 0

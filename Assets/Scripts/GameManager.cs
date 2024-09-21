@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private PlayerStation[] playerStations;
     private int numberOfPlayers;
     private List<Player> players = new List<Player>();
+    private GUIController gui;
     private int roundPlayed = 0; // How many rounds are already played
 
     // Game States
@@ -26,6 +27,15 @@ public class GameManager : MonoBehaviour
     }
 
     public GameState currentGameState;
+
+    public enum RoundTurn
+    {
+        None,
+        Players,
+        Dealer
+    }
+
+    public RoundTurn roundTurn;
 
     #region Singleton
     private static GameManager _instance;
@@ -64,6 +74,7 @@ public class GameManager : MonoBehaviour
     {
         // Start the game in the Main Menu
         currentGameState = GameState.MainMenu;
+        roundTurn = RoundTurn.None;
 
     }
 
@@ -116,6 +127,7 @@ public class GameManager : MonoBehaviour
         // Initialize other game components       
         Dealer dealer = FindObjectOfType<Dealer>();
         Deck deck = FindObjectOfType<Deck>();
+        gui = FindObjectOfType<GUIController>();
 
         // Set up the TurnManager with the spawned players
         turnManager.dealer = dealer;
@@ -173,72 +185,31 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int GetRoundPlayed()
+    {
+        return roundPlayed;
+    }
 
-    //// Set the game state and activate/deactivate corresponding UI
-    //public void SetGameState(GameState newState)
-    //{
-    //    currentGameState = newState;
+    public void GetCurrentTurn(RoundTurn currentRoundTurn)
+    {
+        roundTurn = currentRoundTurn;
+    }
 
-    //    switch (newState)
-    //    {
-    //        case GameState.MainMenu:
-    //            mainMenuUI.SetActive(true);
-    //            pauseMenuUI.SetActive(false);
-    //            gameUI.SetActive(false);
-    //            Time.timeScale = 0f; // Stop time in main menu
-    //            break;
-
-    //        case GameState.Playing:
-    //            mainMenuUI.SetActive(false);
-    //            pauseMenuUI.SetActive(false);
-    //            gameUI.SetActive(true);
-    //            Time.timeScale = 1f; // Resume time when playing
-    //            break;
-
-    //        case GameState.Paused:
-    //            mainMenuUI.SetActive(false);
-    //            pauseMenuUI.SetActive(true);
-    //            gameUI.SetActive(false);
-    //            Time.timeScale = 0f; // Pause time when paused
-    //            break;
-
-    //        case GameState.GameOver:
-    //            // Handle game over state (you could add another UI)
-    //            break;
-    //    }
-    //}
-    //private void InitializeGame()
-    //{
-    //    playerStations = FindObjectsOfType<PlayerStation>();
-    //    SpawnPlayers();
-
-    //    // Initialize other game components
-    //    TurnManager turnManager = FindObjectOfType<TurnManager>();
-    //    WinManager winManager = FindObjectOfType<WinManager>();
-    //    Dealer dealer = FindObjectOfType<Dealer>();
-    //    Deck deck = FindObjectOfType<Deck>();
-
-    //    // Set up the TurnManager with the spawned players
-    //    turnManager.players = new List<Player>(players);
-    //    turnManager.dealer = dealer;
-    //    turnManager.deck = deck;
-
-    //    // Start the first round
-    //    turnManager.StartNewRound();
-    //}
-
+    public string GetCurrentTurn()
+    {
+        return roundTurn.ToString();
+    }
 
     public void PauseGame()
     {
         currentGameState = GameState.Paused;
-        //pauseMenuUI.SetActive(true);
-        //gameUI.SetActive(false);
         Time.timeScale = 0f; // Pause time when paused
     }
 
     public void ResumeGame()
     {
         currentGameState = GameState.Playing;
+        Time.timeScale = 1f; // Time flows again
     }
 
     //public void StartGame()
@@ -255,7 +226,8 @@ public class GameManager : MonoBehaviour
 
     public void BackToMainMenu()
     {
-        //SetGameState(GameState.MainMenu);  // Go back to the main menu
+        currentGameState = GameState.MainMenu;  // Go back to the main menu
+        EndGame();
     }
 
     public void QuitGame()
