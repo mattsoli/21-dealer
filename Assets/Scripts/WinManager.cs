@@ -27,12 +27,12 @@ public class WinManager : MonoBehaviour
 
     private void OnEnable()
     {
-        TurnManager.OnEndGame += EvaluateWinConditions;
+        TurnManager.OnEndRound += EvaluateWinConditions;
     }
 
     private void OnDisable()
     {
-        TurnManager.OnEndGame -= EvaluateWinConditions;
+        TurnManager.OnEndRound -= EvaluateWinConditions;
     }
         private void Awake()
     {

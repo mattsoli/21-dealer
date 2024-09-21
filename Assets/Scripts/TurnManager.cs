@@ -16,7 +16,7 @@ public class TurnManager : MonoBehaviour
         None,
         InitialDeal,
         MiddleDeal,
-        EndGame
+        EndRound
     }
 
     public GamePhase currentPhase;
@@ -24,9 +24,10 @@ public class TurnManager : MonoBehaviour
     private Dictionary<GamePhase, Action> phasesDictionary;
 
     // Event declarations for each phase
+    //public static event Action OnSetup;
     public static event Action OnInitialDeal;
     public static event Action OnMiddleDeal;
-    public static event Action OnEndGame;
+    public static event Action OnEndRound;
 
     private void OnEnable() 
     {
@@ -44,8 +45,16 @@ public class TurnManager : MonoBehaviour
         {
             { GamePhase.InitialDeal, OnInitialDeal },
             { GamePhase.MiddleDeal, OnMiddleDeal },
-            { GamePhase.EndGame, OnEndGame }
+            { GamePhase.EndRound, OnEndRound }
         };
+
+        currentPhase = GamePhase.None;
+
+    }
+
+    private void Start()
+    {
+
     }
 
     void Update()
@@ -71,13 +80,10 @@ public class TurnManager : MonoBehaviour
     {
         if (!player.IsWaiting)
         {
-            players.Remove(player);
+            players.Remove(player); // When a Player isn't waiting then remove it from the waiting list
         }
 
-        Debug.Log("PORCO DIO -> " + dealer);
-        Debug.Log("DIO CANE -> " + deck);
-
-        if (players.Count == 0)
+        if (players.Count == 0) // When all the Players played, it's Dealer's turn
         {
             if (currentPhase == GamePhase.InitialDeal)
             {
@@ -95,8 +101,8 @@ public class TurnManager : MonoBehaviour
     public void StartNewRound()
     {
         currentPhase = GamePhase.None;
-
         Debug.Log("=== New Round ===");
+        NextPhase();
     }
 
     public void NextPhase()
@@ -104,7 +110,6 @@ public class TurnManager : MonoBehaviour
         currentPhase++;
 
         phasesDictionary[currentPhase]?.Invoke();
-
         Debug.Log("Phase " + currentPhase + " started");
     }
 
@@ -116,4 +121,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+
+ 
 }

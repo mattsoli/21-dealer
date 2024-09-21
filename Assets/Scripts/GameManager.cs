@@ -9,10 +9,12 @@ public class GameManager : MonoBehaviour
     public TurnManager turnManager;
     public WinManager winManager;
     public Player playerPrefab;
+    public int roundQuantity = 2; // How many rounds will have a game
 
     private PlayerStation[] playerStations;
     private int numberOfPlayers;
     private List<Player> players = new List<Player>();
+    private int roundPlayed = 0; // How many rounds are already played
 
     // Game States
     public enum GameState
@@ -119,13 +121,12 @@ public class GameManager : MonoBehaviour
         turnManager.dealer = dealer;
         turnManager.deck = deck;
 
-
         // Instantiation of Win and Turn Managers
         Instantiate(winManager);
         Instantiate(turnManager);
 
         // Start the first round
-        turnManager.StartNewRound();
+        //turnManager.StartNewRound();
     }
 
     private void SpawnPlayers()
@@ -156,6 +157,20 @@ public class GameManager : MonoBehaviour
 
         // Load the main menu
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void CheckRoundNumber()
+    {
+        roundPlayed++; // Increment the quantity of rounds played
+
+        if (roundPlayed == roundQuantity) // If all the game's rounds are played, reset the scene and come back to the main menu
+        {
+            // SCHERMATA DI FINE PARTITA
+        }
+        else
+        {
+            turnManager.StartNewRound(); // Start a new round if the game is not complete
+        }
     }
 
 

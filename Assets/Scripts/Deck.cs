@@ -14,17 +14,6 @@ public class Deck : MonoBehaviour
 
     private bool isDraggingCard = false; // Check if there's a card currently being dragged
 
-
-    private void OnEnable()
-    {
-        TurnManager.OnInitialDeal += Initialize;
-    }
-
-    private void OnDisable()
-    {
-        TurnManager.OnInitialDeal -= Initialize;
-    }
-
     void Start()
     {
         Sort();
@@ -32,9 +21,9 @@ public class Deck : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I)) // ---------------> DEBUG DA TOGLIERE
+        if (Input.GetKeyDown(KeyCode.D)) // ---------------> DEBUG DA TOGLIERE
         {
-            Initialize();
+            Shuffle();
         }
 
     }
