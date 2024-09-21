@@ -1170,6 +1170,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Deck
       objectReference: {fileID: 0}
+    - target: {fileID: 3399979382851336878, guid: a3072e3171447484a8c6868c347a0e9d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3455913249332327574, guid: a3072e3171447484a8c6868c347a0e9d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.27

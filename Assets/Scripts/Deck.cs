@@ -26,6 +26,10 @@ public class Deck : MonoBehaviour
             Shuffle();
         }
 
+        if (Input.GetKeyDown(KeyCode.I)) // ---------------> DEBUG DA TOGLIERE
+        {
+            Initialize();
+        }
     }
 
     public void Initialize()
@@ -42,6 +46,12 @@ public class Deck : MonoBehaviour
             {
                 Destroy(pc.gameObject);
             }
+        }
+
+        if (cards.Count > 0) // Renderize the Deck if it was finished
+        {
+            this.GetComponent<MeshRenderer>().enabled = true;
+            this.GetComponent<BoxCollider>().enabled = true;
         }
 
         Debug.Log("Deck initialized");
@@ -81,24 +91,6 @@ public class Deck : MonoBehaviour
         cards = cards.OrderBy(card => card.suit)  // Sort by suit order
                         .ThenBy(card => card.value)  // Sort by value within each suit
                         .ToList();
-    }
-
-    public void DisplayDeck()
-    {
-        foreach (Card card in cards)
-        {
-            GameObject child = new();
-            child.transform.SetParent(this.transform, false);
-            child.AddComponent<PhysicalCard>().cardObject = card;
-
-            Debug.Log(card);
-        }
-    }
-
-
-    public void StopDraggingCard()
-    {
-        isDraggingCard = false;
     }
 
     private void OnMouseDown()
@@ -143,6 +135,16 @@ public class Deck : MonoBehaviour
 
         isDraggingCard = true; // The player is dragging a card
 
+        if (cards.Count < 1) // If all the Cards are finished, then hide the Deck
+        {
+            this.GetComponent<MeshRenderer>().enabled = false;
+            this.GetComponent<BoxCollider>().enabled = false;
+        }
+    }
+
+    public void StopDraggingCard()
+    {
+        isDraggingCard = false;
     }
 
 }
