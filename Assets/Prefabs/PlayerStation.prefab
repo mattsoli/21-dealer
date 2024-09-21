@@ -78,3 +78,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stationId: 1
   handAreaTransform: {fileID: 4262191251431415722}
+  playerCanvas: {fileID: 3747376885647787565, guid: 02eb3214e7ee41240a3f3c1a6c05e21c, type: 3}

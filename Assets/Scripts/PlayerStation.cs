@@ -10,6 +10,7 @@ public class PlayerStation : MonoBehaviour
     public Transform handAreaTransform;
 
     private Player associatedPlayer;
+    public GameObject playerCanvas;
 
     //public Player playerPrefab; // ----------> DEBUG DA TOGLIERE
 
@@ -45,9 +46,9 @@ public class PlayerStation : MonoBehaviour
         associatedPlayer.transform.position = playerSpawnPoint.position;
         associatedPlayer.transform.rotation = playerSpawnPoint.rotation;
 
-        AlignPlayerHandCollider();
+        AssignCanvas();
 
-        //associatedPlayer.gameObject.SetActive(true);
+        AlignPlayerHandCollider();
 
         return associatedPlayer;
     }
@@ -67,6 +68,13 @@ public class PlayerStation : MonoBehaviour
                 Debug.LogWarning("Player.Hand doesn't have a BoxCollider");
             }
         }
+    }
+
+    private void AssignCanvas()
+    {
+        GameObject canvas = Instantiate(playerCanvas) as GameObject;
+        canvas.transform.SetParent(associatedPlayer.transform);
+        canvas.transform.localPosition = playerCanvas.transform.position;
     }
 
     private void OnDrawGizmos()
