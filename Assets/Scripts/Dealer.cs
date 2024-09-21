@@ -20,12 +20,11 @@ public class Dealer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TurnManager tm = FindObjectOfType<TurnManager>();
+        
 
         if (Input.GetKeyDown(KeyCode.Space) && IsDealerTurn)
         {
-            IsDealerTurn = false;
-            tm.NextPhase();
+            StandAndStart();
         }
 
         if(Input.GetKeyDown(KeyCode.S))
@@ -34,6 +33,14 @@ public class Dealer : MonoBehaviour
         }
 
 
+    }
+
+    public void StandAndStart()
+    {
+        TurnManager tm = FindObjectOfType<TurnManager>();
+
+        IsDealerTurn = false;
+        tm.NextPhase();
     }
 
     private void OnTriggerEnter(Collider other)

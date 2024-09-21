@@ -24,12 +24,29 @@ public class UIPlayer : MonoBehaviour
         if (player != null)
         {
             playerNameText.text = player.playerName;
-            scoreText.text = player.hand.score.ToString();
+            scoreText.text = GetScoreText();
 
             if (player.status == WinManager.PlayerStatus.Active)
                 statusText.text = "Waiting";
             else
                 statusText.text = player.status.ToString();
         }
+    }
+
+    private string GetScoreText()
+    {
+        string text = player.hand.score.ToString();
+
+        if (player.hand.Is21)
+            scoreText.color = Color.cyan;
+        else if (player.hand.IsBusted)
+            scoreText.color = Color.yellow;
+        else if (player.hand.IsBlackjack)
+        {
+            scoreText.color = Color.green;
+            text = "BLACKJACK";
+        }
+
+        return text;
     }
 }
