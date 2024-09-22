@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Jin
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 9a7cec678b3e1254c8e2c40ed3765a24, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e866595b72cb7b341a1c984fda1ee221, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

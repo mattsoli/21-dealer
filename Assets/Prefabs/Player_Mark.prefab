@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Mark
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 4959eec7c3d7c0c46a83e57322007908, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 17b98a544e3e67c4dac1447f0674b7be, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
