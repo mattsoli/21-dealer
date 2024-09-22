@@ -16,7 +16,12 @@ public class Player : MonoBehaviour
     private bool isWaiting = false; // for a card
     public bool IsWaiting { get; private set; }
 
-    public WinManager.PlayerStatus status;
+    public WinManager.PlayerStates status;
+
+    private void Start()
+    {
+
+    }
 
     private void Update()
     {
@@ -28,21 +33,23 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        TurnManager.OnSetup += ResetHand;
         TurnManager.OnInitialDeal += InitialSetup;
         TurnManager.OnMiddleDeal += Decide;
 
-        status = WinManager.PlayerStatus.Active;
+        status = WinManager.PlayerStates.Active;
     }
 
     private void OnDisable()
     {
+        TurnManager.OnSetup -= ResetHand;
         TurnManager.OnInitialDeal -= InitialSetup;
         TurnManager.OnMiddleDeal -= Decide;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // When a card is throwed to the player and is waiting for it, add the card to player's hand
+        // When a card is throwed to the Player and is waiting for it, add the Card to Player's hand
         if (other.gameObject.CompareTag("Card") && IsWaiting)
         {
             PhysicalCard lastCard = other.gameObject.GetComponent<PhysicalCard>();
@@ -63,14 +70,12 @@ public class Player : MonoBehaviour
 
     private void Decide()
     {
-        TurnManager tm = FindAnyObjectByType<TurnManager>();
-
         if (hand.IsBusted) // Player Busted
         {
             Debug.Log("Player_" + playerId + "BUSTED!");
-            status = WinManager.PlayerStatus.Bust;
+            status = WinManager.PlayerStates.Bust;
             IsWaiting = false;
-            tm.PlayerEndTurn(this);
+            GameManager.Instance.currentTm.PlayerEndTurn(this);
             return;
         }
 
@@ -81,12 +86,12 @@ public class Player : MonoBehaviour
         if (hand.score > decisionThreshold && randomValue < dynamicProbability) // If true, Player stands
         {
             Stand();
-            tm.PlayerEndTurn(this);
+            GameManager.Instance.currentTm.PlayerEndTurn(this);
         }
         else
         {
             Hit();
-            tm.PlayerWaiting(this);
+            GameManager.Instance.currentTm.PlayerWaiting(this);
         }
 
     }
@@ -95,19 +100,17 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Player_" + playerId + " is waiting the initial setup...");
 
-        TurnManager tm = FindObjectOfType<TurnManager>();
-
         IsWaiting = true;
         IsInitialSetup = true;
 
-        tm.PlayerWaiting(this);
+        GameManager.Instance.currentTm.PlayerWaiting(this);
 
         if (hand.cards.Count == 2)
         {
             IsWaiting = false;
             IsInitialSetup = false;
 
-            tm.PlayerEndTurn(this);
+            GameManager.Instance.currentTm.PlayerEndTurn(this);
         }
 
     }
@@ -123,17 +126,18 @@ public class Player : MonoBehaviour
         IsWaiting = false;
 
         if (hand.IsBlackjack)
-            status = WinManager.PlayerStatus.Blackjack;
+            status = WinManager.PlayerStates.Blackjack;
         else
-            status = WinManager.PlayerStatus.Stand;
+            status = WinManager.PlayerStates.Stand;
 
         Debug.Log("Player_" + playerId + " stands...");
     }
 
     public void ResetHand()
     {
-        hand.cards.Clear();
-        Debug.Log("Player_" + playerId + " hand is reset");
+        status = WinManager.PlayerStates.Active;
+        hand.Reset();
+        Debug.Log($"Player_{playerId}'s hand is reset");
     }
 
     // Return a chance to Stand if score is near to 21

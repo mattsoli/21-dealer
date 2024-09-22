@@ -9,43 +9,37 @@ public class Dealer : MonoBehaviour
     private bool isDealerTurn = false; // for a card
     public bool IsDealerTurn { get; set; }
 
-    public WinManager.PlayerStatus status;
+    public WinManager.PlayerStates status;
 
     // Start is called before the first frame update
     void Start()
     {
-        status = WinManager.PlayerStatus.Active;
+        status = WinManager.PlayerStates.Active;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-
         if (Input.GetKeyDown(KeyCode.Space) && IsDealerTurn)
         {
-            StandAndStart();
+            StandTurn();
         }
 
         if(Input.GetKeyDown(KeyCode.S))
         {
             Debug.Log("> Dealer status -> " + status);
         }
-
-
     }
 
-    public void StandAndStart()
+    public void StandTurn()
     {
-        TurnManager tm = FindObjectOfType<TurnManager>();
-
         IsDealerTurn = false;
-        tm.NextPhase();
+        GameManager.Instance.currentTm.NextPhase();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // when a card is throwed to the player and is waiting for it, add the card to player's hand
+        // When a card is throwed to the Dealer add the Card to Dealer's hand
         if (other.gameObject.CompareTag("Card") && IsDealerTurn)
         {
             PhysicalCard lastCard = other.gameObject.GetComponent<PhysicalCard>();
@@ -55,15 +49,13 @@ public class Dealer : MonoBehaviour
 
             if (hand.cards.Count == 1)
                 InitialSetup();
-
-            HandStateCheck();
+            else
+                HandStateCheck();
         }
     }
 
     public void InitialSetup()
     {
-        TurnManager tm = FindObjectOfType<TurnManager>();
-
         if (hand.cards.Count < 1)
         {
             Debug.Log("Dealer is waiting the initial setup...");
@@ -72,40 +64,45 @@ public class Dealer : MonoBehaviour
         else
         {
             IsDealerTurn = false;
-            tm.NextPhase();
+            GameManager.Instance.currentTm.NextPhase();
         }
     }
 
     private void HandStateCheck()
     {
-        TurnManager tm = FindObjectOfType<TurnManager>();
-
         if (hand.IsBusted)
         {
             Debug.Log("Dealer BUSTED!");
-            status = WinManager.PlayerStatus.Bust;
+            status = WinManager.PlayerStates.Bust;
             IsDealerTurn = false;
-            tm.NextPhase();
+            GameManager.Instance.currentTm.NextPhase();
             return;
         }
         else if (hand.IsBlackjack)
         {
             Debug.Log("Dealer BLACKJACK!");
-            status = WinManager.PlayerStatus.Blackjack;
+            status = WinManager.PlayerStates.Blackjack;
             IsDealerTurn = false;
-            tm.NextPhase();
+            GameManager.Instance.currentTm.NextPhase();
             return;
         }
         else
         {
-            status = WinManager.PlayerStatus.Stand;
+            status = WinManager.PlayerStates.Stand;
 
             if (hand.Is21) // If Hand is a 21 (not blackjack) the Dealer's turn ends
             {
                 IsDealerTurn = false;
-                tm.NextPhase();
+                GameManager.Instance.currentTm.NextPhase();
             }
         }
+    }
+
+    public void ResetHand()
+    {
+        status = WinManager.PlayerStates.Active;
+        hand.Reset();
+        Debug.Log($"Dealer's hand is reset");
     }
 
 

@@ -91,4 +91,16 @@ public class Hand
         return tempScore;
     }
 
+    public void Reset()
+    {
+        IsBlackjack = false;
+        Is21 = false;
+        IsBusted = false;
+        score = 0;
+
+        cards.Clear();
+
+        Debug.Log("Hand reset");
+    }
+
 }

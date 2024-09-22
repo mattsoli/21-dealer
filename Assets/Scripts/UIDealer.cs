@@ -15,13 +15,11 @@ public class UIDealer : MonoBehaviour
     public TMP_Text scoreText;
 
     private Dealer dealer;
-    private TurnManager tm;
 
     // Start is called before the first frame update
     void Start()
     {
         dealer = transform.parent.GetComponent<Dealer>();
-        tm = FindObjectOfType<TurnManager>();
 
         CloseStandPanel();
         OpenStartPanel();
@@ -32,15 +30,20 @@ public class UIDealer : MonoBehaviour
     {
         scoreText.text = GetScoreText();
 
-        if (tm.currentPhase == TurnManager.GamePhase.MiddleDeal && dealer.IsDealerTurn)
+        if (GameManager.Instance.currentTm.currentPhase == TurnManager.GamePhase.MiddleDeal && dealer.IsDealerTurn)
             OpenStandPanel();
+    }
+
+    public void StartGame()
+    {
+        CloseStartPanel();
+        GameManager.Instance.CheckRoundNumber();
     }
 
     public void StandRound()
     {
-        dealer.StandAndStart();
+        dealer.StandTurn();
         CloseStandPanel();
-        CloseStartPanel();
     }
 
     private void OpenStandPanel()
@@ -76,6 +79,8 @@ public class UIDealer : MonoBehaviour
             scoreText.color = Color.green;
             text = "BLACKJACK";
         }
+        else
+            scoreText.color = new Color(229, 229, 229);
 
         return text;
     }

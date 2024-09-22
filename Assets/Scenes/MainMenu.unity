@@ -2134,10 +2134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bddc718d13083048acd00f999edafce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnManager: {fileID: 5635399669036123665, guid: 3de2c17f1035e3a448d7e7386d7cdb69, type: 3}
-  winManager: {fileID: 3454282882570250618, guid: 843948a28993dbe4a848e3a39cccd67c, type: 3}
+  turnManagerPrefab: {fileID: 5635399669036123665, guid: 3de2c17f1035e3a448d7e7386d7cdb69, type: 3}
+  winManagerPrefab: {fileID: 3454282882570250618, guid: 843948a28993dbe4a848e3a39cccd67c, type: 3}
   playerPrefab: {fileID: 1097976102657787921, guid: 059251c78e7da74499ed9b1103b35ad9, type: 3}
-  roundQuantity: 2
+  roundQuantity: 3
+  currentTm: {fileID: 0}
   currentGameState: 0
   roundTurn: 0
 --- !u!4 &2017744509

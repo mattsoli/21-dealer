@@ -16,20 +16,30 @@ public class GUIController : MonoBehaviour
     public GameObject notifyPanel;
     public TMP_Text notifyText;
 
+    public GameObject guiPanel;
+
     void Start()
     {
+
+
     }
 
     void Update()
     {
         UpdateRoundText();
         UpdateTurnText();
-        
     }
 
-    private void ShowRoundEndPanel()
+    private void OpenRoundEndPanel()
     {
+        guiPanel.SetActive(false);
         roundEndPanel.SetActive(true);
+    }
+
+    public void CloseRoundEndPanel()
+    {
+        guiPanel.SetActive(true);
+        roundEndPanel.SetActive(false);
     }
 
     public void ReturnToMainMenu()
@@ -76,14 +86,12 @@ public class GUIController : MonoBehaviour
 
     private void OnEnable()
     {
-        TurnManager.OnEndRound += ShowRoundEndPanel;
-        //WinManager.OnWinConditionEvaluated += TestWinResults;
+        TurnManager.OnEndRound += OpenRoundEndPanel;
     }
 
     private void OnDisable()
     {
-        TurnManager.OnEndRound -= ShowRoundEndPanel;
-        //WinManager.OnWinConditionEvaluated += TestWinResults;
+        TurnManager.OnEndRound -= OpenRoundEndPanel;
     }
 
 

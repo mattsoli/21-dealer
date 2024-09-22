@@ -11,15 +11,11 @@ public class UIRoundEndController : MonoBehaviour
     public GameObject[] playerInfoPanels;
     public Button nextRound;
 
-
-    void Start()
+    private void SetPlayersPanel(Dictionary<Player, Outcome> outcomes)
     {
         SetTitleText();
         SetNextRoundButton();
-    }
 
-    private void SetPlayersPanel(Dictionary<Player, Outcome> outcomes)
-    {
         Player[] players = GameManager.Instance.GetPlayerList();
 
         for (int i = 0; i < players.Length; i++)
@@ -32,24 +28,28 @@ public class UIRoundEndController : MonoBehaviour
 
     private void SetPlayerInfoInPanel(GameObject playerInfopanel, Player player, Outcome outcome)
     {
+        // Set the Player's name text
         TMP_Text playerNameText = playerInfopanel.transform.Find("PlayerNameText").GetComponent<TMP_Text>();
         playerNameText.text = player.playerName;
 
+        // Set the Player's final score text
         TMP_Text scoreText = playerInfopanel.transform.Find("ScoreText").GetComponent<TMP_Text>();
         scoreText.text = player.hand.score.ToString();
 
-        TMP_Text statusText = playerInfopanel.transform.Find("StatusText").GetComponent<TMP_Text>();
-        statusText.text = outcome.ToString();
+        // Set the Player's outcome
+        TMP_Text outcomeText = playerInfopanel.transform.Find("OutcomeText").GetComponent<TMP_Text>();
+        outcomeText.text = outcome.ToString();
 
+        // Coloring the outcome based on itself
         if (outcome == Outcome.Win)
-            statusText.color = Color.green;
+            outcomeText.color = Color.green;
         else if (outcome == Outcome.Lose)
-            statusText.color = Color.red;
+            outcomeText.color = Color.red;
         else
-            statusText.color = Color.cyan;
-    }        
+            outcomeText.color = Color.cyan;
+    }
 
-        private void SetNextRoundButton()
+    private void SetNextRoundButton()
     {
         if (GameManager.Instance.GetRoundPlayed() == GameManager.Instance.roundQuantity)
             nextRound.gameObject.SetActive(false);
@@ -63,7 +63,7 @@ public class UIRoundEndController : MonoBehaviour
         roundResultText.text = $"Round {GameManager.Instance.GetRoundPlayed()}/{GameManager.Instance.roundQuantity} Results";
     }
 
-    private void GetWinResults(Dictionary<Player, Outcome> results) // ---------------> DA TOGLIERE
+    private void GetWinResults(Dictionary<Player, Outcome> results)
     {
         GameManager.Instance.GetCurrentTurn(GameManager.RoundTurn.None);
 

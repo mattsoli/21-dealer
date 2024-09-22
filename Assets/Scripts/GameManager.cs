@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // In Game Elements
-    public TurnManager turnManager;
-    public WinManager winManager;
+    public TurnManager turnManagerPrefab;
+    public WinManager winManagerPrefab;
     public Player playerPrefab;
     public int roundQuantity = 2; // How many rounds will have a game
 
@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     private int numberOfPlayers;
     private List<Player> players = new List<Player>();
     private int roundPlayed = 0; // How many rounds are already played
+
+    public TurnManager currentTm;
 
     // Game States
     public enum GameState
@@ -74,7 +76,6 @@ public class GameManager : MonoBehaviour
         // Start the game in the Main Menu
         currentGameState = GameState.MainMenu;
         roundTurn = RoundTurn.None;
-
     }
 
     void Update()
@@ -128,15 +129,12 @@ public class GameManager : MonoBehaviour
         Deck deck = FindObjectOfType<Deck>();
 
         // Set up the TurnManager with the spawned players
-        turnManager.dealer = dealer;
-        turnManager.deck = deck;
+        turnManagerPrefab.dealer = dealer;
+        turnManagerPrefab.deck = deck;
 
         // Instantiation of Win and Turn Managers
-        Instantiate(winManager);
-        Instantiate(turnManager);
-
-        // Start the first round
-        //turnManager.StartNewRound();
+        Instantiate(winManagerPrefab);
+        currentTm = Instantiate(turnManagerPrefab) as TurnManager;
     }
 
     private void SpawnPlayers()
@@ -175,9 +173,10 @@ public class GameManager : MonoBehaviour
     {
         roundPlayed++; // Increment the quantity of rounds played
 
-        if (roundPlayed < roundQuantity) 
+        if (roundPlayed < roundQuantity + 1)
         {
-            turnManager.StartNewRound(); // Start a new round if the game is not complete
+            currentTm.dealer.ResetHand();
+            currentTm.StartNewRound(); // Start a new round if the game is not complete
         }
         else // If all the game's rounds are played, reset the scene and come back to the main menu
         {
@@ -217,18 +216,6 @@ public class GameManager : MonoBehaviour
         currentGameState = GameState.Playing;
         Time.timeScale = 1f; // Time flows again
     }
-
-    //public void StartGame()
-    //{
-    //    for (int i = 0; i < playerStations.Length; i++)
-    //    {
-    //        Player newPlayer = Instantiate(playerPrefab);
-    //        newPlayer.playerId = i;
-    //        playerStations[i].AssignPlayer(newPlayer);
-    //    }
-
-    //    SetGameState(GameState.Playing); // Start the game from the main menu
-    //}
 
     public void BackToMainMenu()
     {

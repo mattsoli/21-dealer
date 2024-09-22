@@ -257,7 +257,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1974725297802274416}
         m_TargetAssemblyTypeName: UIDealer, Assembly-CSharp
-        m_MethodName: StandRound
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

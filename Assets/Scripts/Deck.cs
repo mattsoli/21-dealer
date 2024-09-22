@@ -147,4 +147,14 @@ public class Deck : MonoBehaviour
         isDraggingCard = false;
     }
 
+    private void OnEnable()
+    {
+        TurnManager.OnSetup += Initialize;
+    }
+
+    private void OnDisable()
+    {
+        TurnManager.OnSetup -= Initialize;
+    }
+
 }

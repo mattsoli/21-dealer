@@ -10,7 +10,7 @@ public class WinManager : MonoBehaviour
 
     public static event Action<Dictionary<Player, Outcome>> OnWinConditionEvaluated;
 
-    public enum PlayerStatus
+    public enum PlayerStates
     {
         Active,
         Blackjack,
@@ -70,19 +70,19 @@ public class WinManager : MonoBehaviour
 
         Debug.Log("Dealer -> " + dealer.status);
 
-        if (player.status == PlayerStatus.Bust)
+        if (player.status == PlayerStates.Bust)
             return Outcome.Lose;
 
-        if (player.status == PlayerStatus.Blackjack && dealer.status != PlayerStatus.Blackjack)
+        if (player.status == PlayerStates.Blackjack && dealer.status != PlayerStates.Blackjack)
             return Outcome.Win;
 
-        if (player.status == PlayerStatus.Blackjack && dealer.status == PlayerStatus.Blackjack)
+        if (player.status == PlayerStates.Blackjack && dealer.status == PlayerStates.Blackjack)
             return Outcome.Push;
 
-        if (dealer.status == PlayerStatus.Bust && player.status != PlayerStatus.Bust)
+        if (dealer.status == PlayerStates.Bust && player.status != PlayerStates.Bust)
             return Outcome.Win;
 
-        if (player.hand.Is21 && dealer.status == PlayerStatus.Blackjack)
+        if (player.hand.Is21 && dealer.status == PlayerStates.Blackjack)
             return Outcome.Lose;
 
         if (player.hand.score > dealer.hand.score)

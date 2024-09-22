@@ -26,7 +26,7 @@ public class UIPlayer : MonoBehaviour
             playerNameText.text = player.playerName;
             scoreText.text = GetScoreText();
 
-            if (player.status == WinManager.PlayerStatus.Active)
+            if (player.status == WinManager.PlayerStates.Active)
                 statusText.text = "Waiting";
             else
                 statusText.text = player.status.ToString();
@@ -45,8 +45,11 @@ public class UIPlayer : MonoBehaviour
         {
             scoreText.color = Color.green;
             text = "BLACKJACK";
-        }
+        } 
+        else
+            scoreText.color = new Color(229, 229, 229);
 
         return text;
     }
+
 }

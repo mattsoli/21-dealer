@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 187898869}
   - component: {fileID: 187898868}
   m_Layer: 5
-  m_Name: StatusText
+  m_Name: OutcomeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1613,7 +1613,7 @@ GameObject:
   - component: {fileID: 467449678}
   - component: {fileID: 467449677}
   m_Layer: 5
-  m_Name: StatusText
+  m_Name: OutcomeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1858,6 +1858,7 @@ MonoBehaviour:
   roundEndPanel: {fileID: 1392186477}
   notifyPanel: {fileID: 1646519844}
   notifyText: {fileID: 1421825076}
+  guiPanel: {fileID: 1459561854}
 --- !u!1001 &503704936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2008,7 +2009,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 483099143}
         m_TargetAssemblyTypeName: GUIController, Assembly-CSharp
-        m_MethodName: TogglePauseMenu
+        m_MethodName: CloseRoundEndPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2872,7 +2873,7 @@ GameObject:
   - component: {fileID: 1054222275}
   - component: {fileID: 1054222274}
   m_Layer: 5
-  m_Name: StatusText
+  m_Name: OutcomeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5229,7 +5230,7 @@ GameObject:
   - component: {fileID: 1741353437}
   - component: {fileID: 1741353436}
   m_Layer: 5
-  m_Name: StatusText
+  m_Name: OutcomeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5575,7 +5576,7 @@ GameObject:
   - component: {fileID: 1865507383}
   - component: {fileID: 1865507382}
   m_Layer: 5
-  m_Name: StatusText
+  m_Name: OutcomeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
