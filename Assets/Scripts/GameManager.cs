@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     private PlayerStation[] playerStations;
     private int numberOfPlayers;
     private List<Player> players = new List<Player>();
-    private GUIController gui;
     private int roundPlayed = 0; // How many rounds are already played
 
     // Game States
@@ -81,7 +80,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // Check for pause input
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)) // -----------------------------------------------------------------------> DEBUG DA TOGLIERE
         {
             if (currentGameState == GameState.Playing)
             {
@@ -94,7 +93,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Check for input to end the game
-        if (SceneManager.GetActiveScene().name == "Game" && Input.GetKeyDown(KeyCode.Escape))
+        if (SceneManager.GetActiveScene().name == "Game" && Input.GetKeyDown(KeyCode.Escape)) // ------------------------> DEBUG DA TOGLIERE
         {
             EndGame();
         }
@@ -127,7 +126,6 @@ public class GameManager : MonoBehaviour
         // Initialize other game components       
         Dealer dealer = FindObjectOfType<Dealer>();
         Deck deck = FindObjectOfType<Deck>();
-        gui = FindObjectOfType<GUIController>();
 
         // Set up the TurnManager with the spawned players
         turnManager.dealer = dealer;
@@ -167,6 +165,8 @@ public class GameManager : MonoBehaviour
         }
         players.Clear();
 
+        roundPlayed = 0;
+
         // Load the main menu
         SceneManager.LoadScene("MainMenu");
     }
@@ -175,14 +175,20 @@ public class GameManager : MonoBehaviour
     {
         roundPlayed++; // Increment the quantity of rounds played
 
-        if (roundPlayed == roundQuantity) // If all the game's rounds are played, reset the scene and come back to the main menu
-        {
-            // SCHERMATA DI FINE PARTITA
-        }
-        else
+        if (roundPlayed < roundQuantity) 
         {
             turnManager.StartNewRound(); // Start a new round if the game is not complete
         }
+        else // If all the game's rounds are played, reset the scene and come back to the main menu
+        {
+            // SCHERMATA DI FINE PARTITA
+        }
+    }
+
+    public Player[] GetPlayerList()
+    {
+        Player[] playerArr = players.ToArray();
+        return playerArr;
     }
 
     public int GetRoundPlayed()

@@ -11,13 +11,13 @@ public class GUIController : MonoBehaviour
     public TMP_Text roundText;
 
     public GameObject pausePanel;
+    public GameObject roundEndPanel;
 
     public GameObject notifyPanel;
     public TMP_Text notifyText;
 
     void Start()
     {
-        
     }
 
     void Update()
@@ -25,6 +25,11 @@ public class GUIController : MonoBehaviour
         UpdateRoundText();
         UpdateTurnText();
         
+    }
+
+    private void ShowRoundEndPanel()
+    {
+        roundEndPanel.SetActive(true);
     }
 
     public void ReturnToMainMenu()
@@ -68,4 +73,18 @@ public class GUIController : MonoBehaviour
         else
             roundText.text = $"Round {round.ToString()}";
     }
+
+    private void OnEnable()
+    {
+        TurnManager.OnEndRound += ShowRoundEndPanel;
+        //WinManager.OnWinConditionEvaluated += TestWinResults;
+    }
+
+    private void OnDisable()
+    {
+        TurnManager.OnEndRound -= ShowRoundEndPanel;
+        //WinManager.OnWinConditionEvaluated += TestWinResults;
+    }
+
+
 }

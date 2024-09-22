@@ -29,16 +29,6 @@ public class TurnManager : MonoBehaviour
     public static event Action OnMiddleDeal;
     public static event Action OnEndRound;
 
-    private void OnEnable() 
-    {
-        WinManager.OnWinConditionEvaluated += TestWinResults; // ---------------> DA TOGLIERE
-    }
-
-    private void OnDisable()
-    {
-        WinManager.OnWinConditionEvaluated -= TestWinResults; // ---------------> DA TOGLIERE
-    }
-
     private void Awake()
     {
         phasesDictionary = new Dictionary<GamePhase, Action>
@@ -112,18 +102,10 @@ public class TurnManager : MonoBehaviour
     {
         currentPhase++;
 
-        phasesDictionary[currentPhase]?.Invoke();
+        if (currentPhase != GamePhase.None)
+            phasesDictionary[currentPhase]?.Invoke();
+
         Debug.Log("Phase " + currentPhase + " started");
-    }
-
-    private void TestWinResults(Dictionary<Player, Outcome> results) // ---------------> DA TOGLIERE
-    {
-        GameManager.Instance.GetCurrentTurn(GameManager.RoundTurn.None);
-
-        foreach (var result in results)
-        {
-            Debug.Log($"{result}");
-        }
     }
 
 

@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 187898869}
   - component: {fileID: 187898868}
   m_Layer: 5
-  m_Name: StatusText (TMP)
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1057,7 +1057,7 @@ GameObject:
   - component: {fileID: 296352168}
   - component: {fileID: 296352167}
   m_Layer: 5
-  m_Name: ScoreText (TMP)
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1325,7 +1325,7 @@ GameObject:
   - component: {fileID: 339442222}
   - component: {fileID: 339442221}
   m_Layer: 5
-  m_Name: ScoreText (TMP)
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1613,7 +1613,7 @@ GameObject:
   - component: {fileID: 467449678}
   - component: {fileID: 467449677}
   m_Layer: 5
-  m_Name: StatusText (TMP)
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1855,6 +1855,7 @@ MonoBehaviour:
   turnText: {fileID: 1915396305}
   roundText: {fileID: 173356268}
   pausePanel: {fileID: 1427016231}
+  roundEndPanel: {fileID: 1392186477}
   notifyPanel: {fileID: 1646519844}
   notifyText: {fileID: 1421825076}
 --- !u!1001 &503704936
@@ -2300,7 +2301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &757448121
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2373,7 +2374,7 @@ GameObject:
   - component: {fileID: 766067983}
   - component: {fileID: 766067982}
   m_Layer: 5
-  m_Name: ScoreText (TMP)
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2737,7 +2738,7 @@ GameObject:
   - component: {fileID: 994539876}
   - component: {fileID: 994539875}
   m_Layer: 5
-  m_Name: ScoreText (TMP)
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2871,7 +2872,7 @@ GameObject:
   - component: {fileID: 1054222275}
   - component: {fileID: 1054222274}
   m_Layer: 5
-  m_Name: StatusText (TMP)
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3005,7 +3006,7 @@ GameObject:
   - component: {fileID: 1129276536}
   - component: {fileID: 1129276535}
   m_Layer: 5
-  m_Name: PlayerNameText (TMP)
+  m_Name: PlayerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3170,7 +3171,7 @@ GameObject:
   - component: {fileID: 1236349691}
   - component: {fileID: 1236349690}
   m_Layer: 5
-  m_Name: ScoreText (TMP)
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3693,6 +3694,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab557a4f1c22ad246be8b0944a05b54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundResultText: {fileID: 910159966}
+  playerInfoPanels:
+  - {fileID: 1753569336}
+  - {fileID: 1586248317}
+  - {fileID: 1943916665}
+  - {fileID: 757448120}
+  - {fileID: 2074194463}
+  nextRound: {fileID: 550937250}
 --- !u!114 &1392186480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4500,7 +4509,7 @@ GameObject:
   - component: {fileID: 1474678638}
   - component: {fileID: 1474678637}
   m_Layer: 5
-  m_Name: PlayerNameText (TMP)
+  m_Name: PlayerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4768,7 +4777,7 @@ GameObject:
   - component: {fileID: 1541594516}
   - component: {fileID: 1541594515}
   m_Layer: 5
-  m_Name: PlayerNameText (TMP)
+  m_Name: PlayerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4907,7 +4916,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1586248318
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5220,7 +5229,7 @@ GameObject:
   - component: {fileID: 1741353437}
   - component: {fileID: 1741353436}
   m_Layer: 5
-  m_Name: StatusText (TMP)
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5359,7 +5368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1753569337
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5432,7 +5441,7 @@ GameObject:
   - component: {fileID: 1861738182}
   - component: {fileID: 1861738181}
   m_Layer: 5
-  m_Name: PlayerNameText (TMP)
+  m_Name: PlayerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5566,7 +5575,7 @@ GameObject:
   - component: {fileID: 1865507383}
   - component: {fileID: 1865507382}
   m_Layer: 5
-  m_Name: StatusText (TMP)
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5834,7 +5843,7 @@ GameObject:
   - component: {fileID: 1930783713}
   - component: {fileID: 1930783712}
   m_Layer: 5
-  m_Name: PlayerNameText (TMP)
+  m_Name: PlayerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6175,7 +6184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1943916666
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6387,7 +6396,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2074194464
 RectTransform:
   m_ObjectHideFlags: 0
