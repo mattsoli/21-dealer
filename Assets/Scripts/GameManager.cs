@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -77,28 +76,6 @@ public class GameManager : MonoBehaviour
         // Start the game in the Main Menu
         currentGameState = GameState.MainMenu;
         roundTurn = RoundTurn.None;
-    }
-
-    void Update()
-    {
-        // Check for pause input
-        if (Input.GetKeyDown(KeyCode.Escape)) // -----------------------------------------------------------------------> DEBUG DA TOGLIERE
-        {
-            if (currentGameState == GameState.Playing)
-            {
-                PauseGame();
-            }
-            else if (currentGameState == GameState.Paused)
-            {
-                ResumeGame();
-            }
-        }
-
-        // Check for input to end the game
-        if (SceneManager.GetActiveScene().name == "Game" && Input.GetKeyDown(KeyCode.Escape)) // ------------------------> DEBUG DA TOGLIERE
-        {
-            EndGame();
-        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using static WinManager;
 
 public class TurnManager : MonoBehaviour
 {
@@ -33,23 +30,7 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
-        //currentPhase = GamePhase.None;
         InitializePhasesDictionary();
-    }
-
-    private void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Keypad1)) // ------> DEBUG DA TOGLIERE
-        {
-            NextPhase();
-        }
-
-        Debug.Log(currentPhase.ToString());
     }
 
     public void PlayerWaiting(Player player)
@@ -58,7 +39,7 @@ public class TurnManager : MonoBehaviour
 
         if (player.IsWaiting && !players.Contains(player))
         {
-            players.Add(player);
+            players.Add(player); // Record all Players are waiting
         }
 
         GameManager.Instance.GetCurrentTurn(GameManager.RoundTurn.Players);
@@ -96,8 +77,6 @@ public class TurnManager : MonoBehaviour
 
     public void NextPhase()
     {
-        //currentPhase = GetNextPhase(currentPhase);
-
         currentPhase++;
 
         if (currentPhase == GamePhase.Setup)
@@ -120,24 +99,6 @@ public class TurnManager : MonoBehaviour
             { GamePhase.MiddleDeal, OnMiddleDeal },
             { GamePhase.EndRound, OnEndRound }
         };
-    }
-
-    private GamePhase GetNextPhase(GamePhase currentPhase)
-    {
-        switch (currentPhase)
-        {
-            case GamePhase.None:
-                return GamePhase.Setup;
-            case GamePhase.Setup:
-                return GamePhase.InitialDeal;
-            case GamePhase.InitialDeal:
-                return GamePhase.MiddleDeal;
-            case GamePhase.MiddleDeal:
-                return GamePhase.EndRound;
-            case GamePhase.EndRound:
-            default:
-                return GamePhase.Setup;
-        }
     }
 
 }

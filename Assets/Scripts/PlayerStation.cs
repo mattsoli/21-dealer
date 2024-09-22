@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static System.Collections.Specialized.BitVector32;
 
 public class PlayerStation : MonoBehaviour
 {
@@ -11,8 +8,6 @@ public class PlayerStation : MonoBehaviour
 
     private Player associatedPlayer;
     public GameObject playerCanvas;
-
-    //public Player playerPrefab; // ----------> DEBUG DA TOGLIERE
 
     private void Awake()
     {
@@ -28,14 +23,6 @@ public class PlayerStation : MonoBehaviour
                 handAreaTransform.localPosition = Vector3.forward;
             }
         }
-    }
-
-    private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.P)) // ----------> DEBUG DA TOGLIERE
-        //{
-        //    AssignPlayer(playerPrefab);
-        //}
     }
 
     public Player AssignPlayer(Player player)

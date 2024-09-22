@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using static GameManager;
 
@@ -17,12 +15,6 @@ public class GUIController : MonoBehaviour
     public TMP_Text notifyText;
 
     public GameObject guiPanel;
-
-    void Start()
-    {
-
-
-    }
 
     void Update()
     {

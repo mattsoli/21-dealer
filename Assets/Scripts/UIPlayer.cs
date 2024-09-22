@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UIPlayer : MonoBehaviour
@@ -40,6 +37,7 @@ public class UIPlayer : MonoBehaviour
         {
             text = player.roundState.ToString();
 
+            // Player state text color
             if (player.roundState == Player.RoundState.Hit)
                 statusText.color = Color.cyan;
             else if (player.roundState == Player.RoundState.Stand)

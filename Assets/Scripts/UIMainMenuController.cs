@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,13 +6,9 @@ public class UIMainMenuController : MonoBehaviour
     public Slider playerCountSlider;
     public Slider roundToPlay;
 
-    private void Start()
-    {
-        
-    }
-
     public void StartGame()
     {
+        // Valorize the GameManager parameters with input values
         int playerCount = Mathf.RoundToInt(playerCountSlider.value);
         int roundCount = Mathf.RoundToInt(roundToPlay.value);
 

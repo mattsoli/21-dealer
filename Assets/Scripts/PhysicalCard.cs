@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PhysicalCard : MonoBehaviour
@@ -26,11 +24,6 @@ public class PhysicalCard : MonoBehaviour
 
         mOffset = transform.position - GetMouseWorldPosition();
         lastMousePosition = GetMouseWorldPosition();
-    }
-
-    void Update()
-    {
-
     }
 
     public void CardRenderer()

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,12 +39,6 @@ public class WinManager : MonoBehaviour
         players = new List<Player>(FindObjectsOfType<Player>());
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void EvaluateWinConditions()
     {
         Debug.Log("=== Win Conditions Evaluation ===");
@@ -68,21 +61,21 @@ public class WinManager : MonoBehaviour
 
         Debug.Log("Player_" + player.playerId + " -> " + player.status);
 
-        Debug.Log("Dealer -> " + dealer.status);
+        Debug.Log("Dealer -> " + dealer.state);
 
         if (player.status == PlayerStates.Bust)
             return Outcome.Lose;
 
-        if (player.status == PlayerStates.Blackjack && dealer.status != PlayerStates.Blackjack)
+        if (player.status == PlayerStates.Blackjack && dealer.state != PlayerStates.Blackjack)
             return Outcome.Win;
 
-        if (player.status == PlayerStates.Blackjack && dealer.status == PlayerStates.Blackjack)
+        if (player.status == PlayerStates.Blackjack && dealer.state == PlayerStates.Blackjack)
             return Outcome.Push;
 
-        if (dealer.status == PlayerStates.Bust && player.status != PlayerStates.Bust)
+        if (dealer.state == PlayerStates.Bust && player.status != PlayerStates.Bust)
             return Outcome.Win;
 
-        if (player.hand.Is21 && dealer.status == PlayerStates.Blackjack)
+        if (player.hand.Is21 && dealer.state == PlayerStates.Blackjack)
             return Outcome.Lose;
 
         if (player.hand.score > dealer.hand.score)

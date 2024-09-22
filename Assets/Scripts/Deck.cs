@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Deck : MonoBehaviour
@@ -19,19 +17,6 @@ public class Deck : MonoBehaviour
         Sort();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.D)) // ---------------> DEBUG DA TOGLIERE
-        {
-            Shuffle();
-        }
-
-        if (Input.GetKeyDown(KeyCode.I)) // ---------------> DEBUG DA TOGLIERE
-        {
-            Initialize();
-        }
-    }
-
     public void Initialize()
     {
         if (discards.Count > 0)
@@ -42,7 +27,7 @@ public class Deck : MonoBehaviour
 
             List<PhysicalCard> physicalDiscards = new List<PhysicalCard>(FindObjectsOfType<PhysicalCard>());
 
-            foreach (PhysicalCard pc in physicalDiscards)
+            foreach (PhysicalCard pc in physicalDiscards) // Destroy every PhysicalCard in the scene
             {
                 Destroy(pc.gameObject);
             }

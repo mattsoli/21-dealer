@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +15,7 @@ public class UIRoundEndController : MonoBehaviour
         SetNextRoundButton();
     }
 
+    // Set the each panel with the Players info
     private void SetPlayersPanel(Dictionary<Player, Outcome> outcomes)
     {
         SetTitleText();

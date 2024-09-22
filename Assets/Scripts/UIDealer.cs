@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -16,7 +14,6 @@ public class UIDealer : MonoBehaviour
 
     private Dealer dealer;
 
-    // Start is called before the first frame update
     void Start()
     {
         dealer = transform.parent.GetComponent<Dealer>();
@@ -25,7 +22,6 @@ public class UIDealer : MonoBehaviour
         OpenStartPanel();
     }
 
-    // Update is called once per frame
     void Update()
     {
         scoreText.text = GetScoreText();
@@ -72,6 +68,7 @@ public class UIDealer : MonoBehaviour
     {
         string text = dealer.hand.score.ToString();
 
+        // Set the text color based of the Dealer's Hand state
         if (dealer.hand.Is21)
             scoreText.color = Color.cyan;
         else if (dealer.hand.IsBusted)
