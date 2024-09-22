@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +9,7 @@ public class GameManager : MonoBehaviour
     // In Game Elements
     public TurnManager turnManagerPrefab;
     public WinManager winManagerPrefab;
-    public Player playerPrefab;
+    public List<Player> playerPrefabs;
     public int roundQuantity = 2; // How many rounds will have a game
 
     private PlayerStation[] playerStations;
@@ -137,19 +138,20 @@ public class GameManager : MonoBehaviour
         currentTm = Instantiate(turnManagerPrefab) as TurnManager;
     }
 
+    // Method to spawn Players for each PlayerStation
     private void SpawnPlayers()
     {
         players.Clear();
-        for (int i = 0; i < numberOfPlayers; i++)
+
+        System.Random rng = new System.Random();
+        playerPrefabs = playerPrefabs.OrderBy(x => rng.Next()).ToList(); // Random order of which type of Player prefab will be in the game
+
+        for (int i = 0; i < numberOfPlayers; i++) // Determining how many Players are in this game
         {
             if (i < playerStations.Length)
             {
-                Player player = playerStations[i].AssignPlayer(playerPrefab);
+                Player player = playerStations[i].AssignPlayer(playerPrefabs[i]);
                 players.Add(player);
-            }
-            else
-            {
-                Debug.LogWarning($"Not enough PlayerStations for player {i}");
             }
         }
     }
