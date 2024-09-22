@@ -26,11 +26,31 @@ public class UIPlayer : MonoBehaviour
             playerNameText.text = player.playerName;
             scoreText.text = GetScoreText();
 
-            if (player.status == WinManager.PlayerStates.Active)
-                statusText.text = "Waiting";
-            else
-                statusText.text = player.status.ToString();
+            statusText.text = GetStateText();
         }
+    }
+
+    private string GetStateText()
+    {
+        string text;
+
+        if (player.roundState == Player.RoundState.None)
+            text = "";
+        else
+        {
+            text = player.roundState.ToString();
+
+            if (player.roundState == Player.RoundState.Hit)
+                statusText.color = Color.cyan;
+            else if (player.roundState == Player.RoundState.Stand)
+                statusText.color = Color.yellow;
+            else if(player.roundState == Player.RoundState.Bust)
+                statusText.color = Color.red;
+            else
+                statusText.color = Color.gray;
+        }
+
+        return text;
     }
 
     private string GetScoreText()

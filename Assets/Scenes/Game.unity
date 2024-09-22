@@ -525,10 +525,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bddc718d13083048acd00f999edafce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnManager: {fileID: 0}
-  winManager: {fileID: 0}
+  turnManagerPrefab: {fileID: 0}
+  winManagerPrefab: {fileID: 0}
   playerPrefab: {fileID: 0}
   roundQuantity: 2
+  currentTm: {fileID: 0}
   currentGameState: 0
   roundTurn: 0
 --- !u!4 &172871787
@@ -6514,6 +6515,10 @@ PrefabInstance:
     - target: {fileID: 6093257081365713406, guid: 153f6596b507e1d49806055d5282862e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809882028280655393, guid: 153f6596b507e1d49806055d5282862e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

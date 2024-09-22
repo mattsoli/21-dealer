@@ -18,9 +18,18 @@ public class Player : MonoBehaviour
 
     public WinManager.PlayerStates status;
 
+    public enum RoundState
+    {
+        Hit,
+        Stand,
+        Bust,
+        None
+    }
+    public RoundState roundState;
+
     private void Start()
     {
-
+        roundState = RoundState.None;
     }
 
     private void Update()
@@ -74,6 +83,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Player_" + playerId + "BUSTED!");
             status = WinManager.PlayerStates.Bust;
+            roundState = RoundState.Bust;
             IsWaiting = false;
             GameManager.Instance.currentTm.PlayerEndTurn(this);
             return;
@@ -103,12 +113,16 @@ public class Player : MonoBehaviour
         IsWaiting = true;
         IsInitialSetup = true;
 
+        roundState = RoundState.Hit;
+
         GameManager.Instance.currentTm.PlayerWaiting(this);
 
         if (hand.cards.Count == 2)
         {
             IsWaiting = false;
             IsInitialSetup = false;
+
+            roundState = RoundState.Stand;
 
             GameManager.Instance.currentTm.PlayerEndTurn(this);
         }
@@ -118,12 +132,14 @@ public class Player : MonoBehaviour
     private void Hit()
     {
         IsWaiting = true;
+        roundState = RoundState.Hit;
         Debug.Log("Player_" + playerId + " asks new card...");
     }
 
     private void Stand()
     {
         IsWaiting = false;
+        roundState = RoundState.Stand;
 
         if (hand.IsBlackjack)
             status = WinManager.PlayerStates.Blackjack;
@@ -136,6 +152,7 @@ public class Player : MonoBehaviour
     public void ResetHand()
     {
         status = WinManager.PlayerStates.Active;
+        roundState = RoundState.None;
         hand.Reset();
         Debug.Log($"Player_{playerId}'s hand is reset");
     }
