@@ -11,10 +11,15 @@ public class UIRoundEndController : MonoBehaviour
     public GameObject[] playerInfoPanels;
     public Button nextRound;
 
+    private void Start()
+    {
+        SetNextRoundButton();
+    }
+
     private void SetPlayersPanel(Dictionary<Player, Outcome> outcomes)
     {
         SetTitleText();
-        SetNextRoundButton();
+        ToggleRoundButton();
 
         Player[] players = GameManager.Instance.GetPlayerList();
 
@@ -49,12 +54,15 @@ public class UIRoundEndController : MonoBehaviour
             outcomeText.color = Color.cyan;
     }
 
-    private void SetNextRoundButton()
+    private void ToggleRoundButton()
     {
         if (GameManager.Instance.GetRoundPlayed() == GameManager.Instance.roundQuantity)
             nextRound.gameObject.SetActive(false);
-        else
-            nextRound.onClick.AddListener(() => GameManager.Instance.CheckRoundNumber());
+    }
+
+    private void SetNextRoundButton()
+    {
+        nextRound.onClick.AddListener(() => GameManager.Instance.CheckRoundNumber());
     }
 
     private void SetTitleText()

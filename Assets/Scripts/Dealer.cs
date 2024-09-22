@@ -6,8 +6,7 @@ public class Dealer : MonoBehaviour
 {
     public Hand hand = new();
 
-    private bool isDealerTurn = false; // for a card
-    public bool IsDealerTurn { get; set; }
+    public bool isDealerTurn = false;
 
     public WinManager.PlayerStates status;
 
@@ -15,32 +14,26 @@ public class Dealer : MonoBehaviour
     void Start()
     {
         status = WinManager.PlayerStates.Active;
+
+        ToggleEnablingHandCollider(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && IsDealerTurn)
-        {
-            StandTurn();
-        }
 
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("> Dealer status -> " + status);
-        }
     }
 
     public void StandTurn()
     {
-        IsDealerTurn = false;
+        isDealerTurn = false;
         GameManager.Instance.currentTm.NextPhase();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         // When a card is throwed to the Dealer add the Card to Dealer's hand
-        if (other.gameObject.CompareTag("Card") && IsDealerTurn)
+        if (other.gameObject.CompareTag("Card") && isDealerTurn)
         {
             PhysicalCard lastCard = other.gameObject.GetComponent<PhysicalCard>();
             hand.AddCard(lastCard);
@@ -54,16 +47,23 @@ public class Dealer : MonoBehaviour
         }
     }
 
+    public void IsDealerTurn()
+    {
+        isDealerTurn = true;
+    }
+
     public void InitialSetup()
     {
+        ToggleEnablingHandCollider(true);
+
         if (hand.cards.Count < 1)
         {
             Debug.Log("Dealer is waiting the initial setup...");
-            IsDealerTurn = true;
+            isDealerTurn = true;
         }
         else
         {
-            IsDealerTurn = false;
+            isDealerTurn = false;
             GameManager.Instance.currentTm.NextPhase();
         }
     }
@@ -74,7 +74,7 @@ public class Dealer : MonoBehaviour
         {
             Debug.Log("Dealer BUSTED!");
             status = WinManager.PlayerStates.Bust;
-            IsDealerTurn = false;
+            isDealerTurn = false;
             GameManager.Instance.currentTm.NextPhase();
             return;
         }
@@ -82,7 +82,7 @@ public class Dealer : MonoBehaviour
         {
             Debug.Log("Dealer BLACKJACK!");
             status = WinManager.PlayerStates.Blackjack;
-            IsDealerTurn = false;
+            isDealerTurn = false;
             GameManager.Instance.currentTm.NextPhase();
             return;
         }
@@ -92,7 +92,7 @@ public class Dealer : MonoBehaviour
 
             if (hand.Is21) // If Hand is a 21 (not blackjack) the Dealer's turn ends
             {
-                IsDealerTurn = false;
+                isDealerTurn = false;
                 GameManager.Instance.currentTm.NextPhase();
             }
         }
@@ -100,9 +100,17 @@ public class Dealer : MonoBehaviour
 
     public void ResetHand()
     {
+        ToggleEnablingHandCollider(false);
         status = WinManager.PlayerStates.Active;
         hand.Reset();
         Debug.Log($"Dealer's hand is reset");
+    }
+    private void ToggleEnablingHandCollider(bool toggle)
+    {
+        if (toggle)
+            gameObject.GetComponent<BoxCollider>().enabled = true;
+        else
+            gameObject.GetComponent<BoxCollider>().enabled = false;
     }
 
 

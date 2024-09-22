@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public TurnManager turnManagerPrefab;
     public WinManager winManagerPrefab;
     public List<Player> playerPrefabs;
-    public int roundQuantity = 2; // How many rounds will have a game
+    public int roundQuantity; // How many rounds will have a game
 
     private PlayerStation[] playerStations;
     private int numberOfPlayers;
@@ -114,9 +114,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StartNewGame(int playerCount)
+    public void StartNewGame(int playerCount, int roundToPlay)
     {
         numberOfPlayers = Mathf.Clamp(playerCount, 1, 5);
+        roundQuantity = roundToPlay;
         SceneManager.LoadScene("Game");
     }
 
@@ -175,14 +176,14 @@ public class GameManager : MonoBehaviour
     {
         roundPlayed++; // Increment the quantity of rounds played
 
-        if (roundPlayed < roundQuantity + 1)
+        if (roundPlayed < roundQuantity + 1) 
         {
             currentTm.dealer.ResetHand();
             currentTm.StartNewRound(); // Start a new round if the game is not complete
         }
         else // If all the game's rounds are played, reset the scene and come back to the main menu
         {
-            // SCHERMATA DI FINE PARTITA
+            Debug.LogError("Round finished");
         }
     }
 

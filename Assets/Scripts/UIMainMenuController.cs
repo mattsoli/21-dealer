@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIMainMenuController : MonoBehaviour
 {
     public Slider playerCountSlider;
+    public Slider roundToPlay;
 
     private void Start()
     {
@@ -15,7 +16,9 @@ public class UIMainMenuController : MonoBehaviour
     public void StartGame()
     {
         int playerCount = Mathf.RoundToInt(playerCountSlider.value);
-        GameManager.Instance.StartNewGame(playerCount);
+        int roundCount = Mathf.RoundToInt(roundToPlay.value);
+
+        GameManager.Instance.StartNewGame(playerCount, roundCount);
     }
 
     public void Quit()

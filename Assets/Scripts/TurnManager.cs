@@ -79,7 +79,7 @@ public class TurnManager : MonoBehaviour
             }
             else
             {
-                dealer.IsDealerTurn = true;
+                dealer.IsDealerTurn();
                 Debug.Log("> Dealer's turn");
             }
 

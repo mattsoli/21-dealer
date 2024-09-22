@@ -30,14 +30,13 @@ public class Player : MonoBehaviour
     private void Start()
     {
         roundState = RoundState.None;
+
+        ToggleEnablingHandCollider(IsWaiting);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) // ---------------> DEBUG DA TOGLIERE
-        {
-            Debug.Log("> Player_" + playerId + " status -> " + status);
-        }
+        
     }
 
     private void OnEnable()
@@ -110,6 +109,8 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Player_" + playerId + " is waiting the initial setup...");
 
+        ToggleEnablingHandCollider(true);
+
         IsWaiting = true;
         IsInitialSetup = true;
 
@@ -151,6 +152,8 @@ public class Player : MonoBehaviour
 
     public void ResetHand()
     {
+        ToggleEnablingHandCollider(false);
+
         status = WinManager.PlayerStates.Active;
         roundState = RoundState.None;
         hand.Reset();
@@ -170,6 +173,14 @@ public class Player : MonoBehaviour
 
         Debug.Log($"Player_{playerId} has a {probability}% to Stand");
         return probability;
+    }
+
+    private void ToggleEnablingHandCollider(bool toggle)
+    {
+        if (toggle)
+            gameObject.GetComponent<BoxCollider>().enabled = true;
+        else
+            gameObject.GetComponent<BoxCollider>().enabled = false;
     }
 
 }
