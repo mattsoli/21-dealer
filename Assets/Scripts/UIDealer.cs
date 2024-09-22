@@ -32,6 +32,8 @@ public class UIDealer : MonoBehaviour
 
         if (GameManager.Instance.currentTm.currentPhase == TurnManager.GamePhase.MiddleDeal && dealer.isDealerTurn)
             OpenStandPanel();
+        else
+            CloseStandPanel();
     }
 
     public void StartGame()
