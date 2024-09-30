@@ -26,10 +26,10 @@ public class UIDealer : MonoBehaviour
     {
         scoreText.text = GetScoreText();
 
-        if (GameManager.Instance.currentTm.currentPhase == TurnManager.GamePhase.MiddleDeal && dealer.isDealerTurn)
-            OpenStandPanel();
-        else
-            CloseStandPanel();
+        //if (GameManager.Instance.currentTm.currentPhase == TurnManager.GamePhase.MiddleDeal && dealer.isDealerTurn)
+        //    OpenStandPanel();
+        //else
+        CloseStandPanel();
     }
 
     public void StartGame()

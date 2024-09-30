@@ -58,7 +58,12 @@ public class TurnManager : MonoBehaviour
             {
                 dealer.InitialSetup();
             }
-            else
+            else if (currentPhase == GamePhase.MiddleDeal && CheckAllPlayersIfBust()) // With all Players busted, no need a Dealer turn
+            {
+                Debug.Log("All Players busted, endround...");
+                    NextPhase();
+            }
+            else // Else the Dealer has their turn
             {
                 dealer.IsDealerTurn();
                 Debug.Log("> Dealer's turn");
@@ -99,6 +104,27 @@ public class TurnManager : MonoBehaviour
             { GamePhase.MiddleDeal, OnMiddleDeal },
             { GamePhase.EndRound, OnEndRound }
         };
+    }
+
+    private bool CheckAllPlayersIfBust()
+    {
+        Player[] currPlayers = GameManager.Instance.GetPlayerList(); // Get the list of this game's Players
+        bool areAllBusted = false;
+
+        int i = 0;
+        foreach (var p in currPlayers) // Check every Players if are busted or not
+        {
+            if (p.hand.IsBusted)
+            {
+                i++;
+                if (i == currPlayers.Length) // All Players are busted
+                    areAllBusted = true;
+            }
+            else
+                break;
+        }
+
+        return areAllBusted;
     }
 
 }

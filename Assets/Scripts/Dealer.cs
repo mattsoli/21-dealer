@@ -31,7 +31,7 @@ public class Dealer : MonoBehaviour
 
             Debug.Log("Dealer gets => " + lastCard.cardObject.ToString());
 
-            if (hand.cards.Count <= 2) // Situation of the Initial Deal, the Dealer must have 2 Card
+            if (hand.cards.Count < 3) // Situation of the Initial Deal, the Dealer must have 2 Card
                 InitialSetup();
             else
                 HandStateCheck();
@@ -41,6 +41,7 @@ public class Dealer : MonoBehaviour
     public void IsDealerTurn()
     {
         isDealerTurn = true;
+        HandStateCheck();
     }
 
     public void InitialSetup()
@@ -55,9 +56,6 @@ public class Dealer : MonoBehaviour
             isDealerTurn = false;
             GameManager.Instance.currentTm.NextPhase(); // Initial Setup is finished, go forward
         }
-        //else
-        //{
-        //}
     }
 
     private void HandStateCheck() // Check the state of the Hand
@@ -66,24 +64,20 @@ public class Dealer : MonoBehaviour
         {
             Debug.Log("Dealer BUSTED!");
             state = WinManager.PlayerStates.Bust;
-            StandTurn();
-            return;
         }
         else if (hand.IsBlackjack)
         {
             Debug.Log("Dealer BLACKJACK!");
             state = WinManager.PlayerStates.Blackjack;
-            StandTurn();
-            return;
         }
-        else
-        {
-            state = WinManager.PlayerStates.Stand;
 
-            if (hand.Is21) // If Hand is a 21 (not blackjack) the Dealer's stands automatically
+        if (hand.Is16Exceeded) // If Dealer's Hand is 17 or more, automatically stands
+        {
+            if (state == WinManager.PlayerStates.Active) // Hand is not Busted or a Blackjack, else Dealer's state becomes Stand
             {
-                StandTurn();
+                state = WinManager.PlayerStates.Stand;
             }
+            StandTurn();
         }
     }
 

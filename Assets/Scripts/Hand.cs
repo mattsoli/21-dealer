@@ -15,6 +15,9 @@ public class Hand
     private bool is21 = false;
     public bool Is21 { get; set; }
 
+    private bool is16Exceeded = false;
+    public bool Is16Exceeded { get; set; }
+
     public void AddCard(PhysicalCard card)
     {
         if (IsBusted || IsBlackjack || Is21) // the Card can only be picked if the hand is not busted or is not a blackjack
@@ -32,6 +35,12 @@ public class Hand
     private void HandInfoUpdate()
     {
         score = GetScore(); // Calculate the score of this hand
+
+        if (score > 16) // Track if the score is 17 or more
+        {
+            Is16Exceeded = true;
+            Debug.Log("Hand 16 exceeded!");
+        }
 
         if (score > 21) // If score > 21 is busted
         {
@@ -51,6 +60,7 @@ public class Hand
                 Debug.Log("Hand 21!");
             }
         }
+        
     }
 
     public int GetScore()
@@ -95,6 +105,7 @@ public class Hand
         IsBlackjack = false;
         Is21 = false;
         IsBusted = false;
+        Is16Exceeded = false;
         score = 0;
 
         cards.Clear();
