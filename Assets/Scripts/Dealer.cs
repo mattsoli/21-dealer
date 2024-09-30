@@ -31,7 +31,7 @@ public class Dealer : MonoBehaviour
 
             Debug.Log("Dealer gets => " + lastCard.cardObject.ToString());
 
-            if (hand.cards.Count == 1) // Situation of the Initial Deal, the Dealer must have 1 Card
+            if (hand.cards.Count <= 2) // Situation of the Initial Deal, the Dealer must have 2 Card
                 InitialSetup();
             else
                 HandStateCheck();
@@ -47,16 +47,17 @@ public class Dealer : MonoBehaviour
     {
         ToggleEnablingHandCollider(true);
 
-        if (hand.cards.Count < 1)
-        {
-            Debug.Log("Dealer is waiting the initial setup...");
-            isDealerTurn = true;
-        }
-        else
+        Debug.Log("Dealer is waiting the initial setup...");
+        isDealerTurn = true;
+
+        if (hand.cards.Count == 2)
         {
             isDealerTurn = false;
             GameManager.Instance.currentTm.NextPhase(); // Initial Setup is finished, go forward
         }
+        //else
+        //{
+        //}
     }
 
     private void HandStateCheck() // Check the state of the Hand
