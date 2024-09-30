@@ -17,14 +17,79 @@ public class PhysicalCard : MonoBehaviour
     public float maxVelocityMagnitude = 10f;
     public float smoothingFactor = 0.1f;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
     private void Start()
     {
         mOffset = this.transform.position - GetMouseWorldPosition(); // Calculate the offset between the card's position and the mouse position
-        rb = GetComponent<Rigidbody>();
 
         mOffset = transform.position - GetMouseWorldPosition();
         lastMousePosition = GetMouseWorldPosition();
     }
+
+    private void Update()
+    {
+        if (isDragging)
+        {
+            Vector3 newPosition = GetMouseWorldPosition() + mOffset;
+            newPosition.y = 1f;
+            transform.position = newPosition;
+
+            Vector3 currentMousePosition = GetMouseWorldPosition();
+            Vector3 frameVelocity = (currentMousePosition - lastMousePosition) / Time.deltaTime;
+
+            currentVelocity = Vector3.Lerp(currentVelocity, frameVelocity, smoothingFactor);
+            currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxVelocityMagnitude);
+
+            lastMousePosition = currentMousePosition;
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                StopDragging();
+            }
+        }
+    }
+
+    public void StartDragging()
+    {
+        if (isInHand) return;
+
+        isDragging = true;
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
+        mOffset = transform.position - GetMouseWorldPosition();
+        lastMousePosition = GetMouseWorldPosition();
+        currentVelocity = Vector3.zero;
+    }
+
+    private void StopDragging()
+    {
+        if (!isDragging) return;
+
+        isDragging = false;
+        FindObjectOfType<Deck>().StopDraggingCard();
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+
+            if (currentVelocity.magnitude > minVelocityMagnitude) rb.velocity = currentVelocity;
+            else rb.velocity = Vector3.zero;
+        }
+        else
+        {
+            Debug.LogError("Rigidbody is null on stop dragging!");
+        }
+
+        currentVelocity = Vector3.zero;
+    }
+
+
 
     public void CardRenderer()
     {
@@ -56,57 +121,65 @@ public class PhysicalCard : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (isInHand) return; // If the card in in hand it can't be dragged anymore
-
-        isDragging = true;
-        rb.isKinematic = true;
-        mOffset = transform.position - GetMouseWorldPosition();
-        lastMousePosition = GetMouseWorldPosition();
-
-        currentVelocity = Vector3.zero;
-    }
-
-    private void OnMouseDrag()
-    {
-        if (!isDragging) return;
-
-        Vector3 newPosition = GetMouseWorldPosition() + mOffset;
-        newPosition.y = 1f; // The height is fixed in the scene
-        transform.position = newPosition;
-
-        Vector3 currentMousePosition = GetMouseWorldPosition();
-        Vector3 frameVelocity = (currentMousePosition - lastMousePosition) / Time.deltaTime;
-
-        // Smooth the velocity
-        currentVelocity = Vector3.Lerp(currentVelocity, frameVelocity, smoothingFactor);
-
-        // Clamp the velocity magnitude
-        currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxVelocityMagnitude);
-
-        lastMousePosition = currentMousePosition;
-    }
-
-    private void OnMouseUp()
-    {
-        if (!isDragging) return;
-
-        isDragging = false;
-        FindObjectOfType<Deck>().StopDraggingCard();
-
-        if (rb != null)
+        if (!isDragging && !isInHand)
         {
-            rb.isKinematic = false;
-
-            if (currentVelocity.magnitude > minVelocityMagnitude) rb.velocity = currentVelocity;
-            else rb.velocity = Vector3.zero;
+            StartDragging();
         }
-        else
-        {
-            Debug.LogError("Rigidbody is null on mouse up!");
-        }
-
-        currentVelocity = Vector3.zero;
     }
+
+    //private void OnMouseDown()
+    //{
+    //    if (isInHand) return; // If the card in in hand it can't be dragged anymore
+
+    //    isDragging = true;
+    //    rb.isKinematic = true;
+    //    mOffset = transform.position - GetMouseWorldPosition();
+    //    lastMousePosition = GetMouseWorldPosition();
+
+    //    currentVelocity = Vector3.zero;
+    //}
+
+    //private void OnMouseDrag()
+    //{
+    //    if (!isDragging) return;
+
+    //    Vector3 newPosition = GetMouseWorldPosition() + mOffset;
+    //    newPosition.y = 1f; // The height is fixed in the scene
+    //    transform.position = newPosition;
+
+    //    Vector3 currentMousePosition = GetMouseWorldPosition();
+    //    Vector3 frameVelocity = (currentMousePosition - lastMousePosition) / Time.deltaTime;
+
+    //    // Smooth the velocity
+    //    currentVelocity = Vector3.Lerp(currentVelocity, frameVelocity, smoothingFactor);
+
+    //    // Clamp the velocity magnitude
+    //    currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxVelocityMagnitude);
+
+    //    lastMousePosition = currentMousePosition;
+    //}
+
+    //private void OnMouseUp()
+    //{
+    //    if (!isDragging) return;
+
+    //    isDragging = false;
+    //    FindObjectOfType<Deck>().StopDraggingCard();
+
+    //    if (rb != null)
+    //    {
+    //        rb.isKinematic = false;
+
+    //        if (currentVelocity.magnitude > minVelocityMagnitude) rb.velocity = currentVelocity;
+    //        else rb.velocity = Vector3.zero;
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Rigidbody is null on mouse up!");
+    //    }
+
+    //    currentVelocity = Vector3.zero;
+    //}
 
 
 }

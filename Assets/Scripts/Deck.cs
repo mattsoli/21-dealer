@@ -12,6 +12,8 @@ public class Deck : MonoBehaviour
 
     private bool isDraggingCard = false; // Check if there's a card currently being dragged
 
+    private PhysicalCard currentDraggedCard;
+
     void Start()
     {
         Sort();
@@ -95,12 +97,11 @@ public class Deck : MonoBehaviour
         }
     }
 
-    // Instantiate the first card in the deck and allow it to be dragged
     private void InstantiateFirstCard()
     {
-        Card firstCard = cards[0]; // Get the first card from the list
+        Card firstCard = cards[0];
 
-        if (physicalCardPrefab == null) // Check if the PhysicalCard prefab is assigned
+        if (physicalCardPrefab == null)
         {
             Debug.LogError("No PhysicalCard prefab!");
             return;
@@ -109,23 +110,56 @@ public class Deck : MonoBehaviour
         Vector3 spawnPoint = this.transform.position;
         spawnPoint.y = 1f;
 
-        // Instantiate the card at the deck's position
         GameObject instantiatedPhysicalCard = Instantiate(physicalCardPrefab, spawnPoint, Quaternion.identity);
+        currentDraggedCard = instantiatedPhysicalCard.GetComponent<PhysicalCard>();
 
-        instantiatedPhysicalCard.GetComponent<PhysicalCard>().cardObject = firstCard; // Add the Card to the instantiated PhysicalCard
-        instantiatedPhysicalCard.GetComponent<PhysicalCard>().CardRenderer(); // Renderize the card
+        currentDraggedCard.cardObject = firstCard;
+        currentDraggedCard.CardRenderer();
 
-        cards.RemoveAt(0); // Remove the card from the deck list
-        discards.Add(firstCard); // Add the removed card inside the discards
+        cards.RemoveAt(0);
+        discards.Add(firstCard);
 
-        isDraggingCard = true; // The player is dragging a card
+        isDraggingCard = true;
+        currentDraggedCard.StartDragging();
 
-        if (cards.Count < 1) // If all the Cards are finished, then hide the Deck
+        if (cards.Count < 1)
         {
             this.GetComponent<MeshRenderer>().enabled = false;
             this.GetComponent<BoxCollider>().enabled = false;
         }
     }
+
+    // Instantiate the first card in the deck and allow it to be dragged
+    //private void InstantiateFirstCard()
+    //{
+    //    Card firstCard = cards[0]; // Get the first card from the list
+
+    //    if (physicalCardPrefab == null) // Check if the PhysicalCard prefab is assigned
+    //    {
+    //        Debug.LogError("No PhysicalCard prefab!");
+    //        return;
+    //    }
+
+    //    Vector3 spawnPoint = this.transform.position;
+    //    spawnPoint.y = 1f;
+
+    //    // Instantiate the card at the deck's position
+    //    GameObject instantiatedPhysicalCard = Instantiate(physicalCardPrefab, spawnPoint, Quaternion.identity);
+
+    //    instantiatedPhysicalCard.GetComponent<PhysicalCard>().cardObject = firstCard; // Add the Card to the instantiated PhysicalCard
+    //    instantiatedPhysicalCard.GetComponent<PhysicalCard>().CardRenderer(); // Renderize the card
+
+    //    cards.RemoveAt(0); // Remove the card from the deck list
+    //    discards.Add(firstCard); // Add the removed card inside the discards
+
+    //    isDraggingCard = true; // The player is dragging a card
+
+    //    if (cards.Count < 1) // If all the Cards are finished, then hide the Deck
+    //    {
+    //        this.GetComponent<MeshRenderer>().enabled = false;
+    //        this.GetComponent<BoxCollider>().enabled = false;
+    //    }
+    //}
 
     public void StopDraggingCard()
     {
